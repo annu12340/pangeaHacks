@@ -144,25 +144,7 @@
       font-size: 8px;
       bottom: 55px;
    }
-   .container .col2 input {
-      display: block;
-      width: 340px;
-      height: 40px;
-      padding-left: 10px;
-      padding-top: 3px;
-      padding-bottom: 3px;
-      margin: 7px;
-      font-size: 17px;
-      border-radius: 20px;
-      background: #353340;
-      border: none;
-      transition: background 0.5s;
-   }
-   .container .col2 input:focus {
-      outline-width: 0;
-      background: rgba(31, 134, 252, 0.15);
-      transition: background 0.5s;
-   }
+
    .container .col2 label {
       padding-left: 8px;
       font-size: 18px;
@@ -193,58 +175,55 @@
    }
 </style>
 <section class="ftco-section">
-   <h1 class="title text-center">Checkout</h1>
+   <h1 class="h2 text-center">Checkout</h1>
    <div class="container-fluid">
-      <div class="row">
-         <div class="col-xl-12">
-            <div class="cart-detail">
-               <div class="container">
-                  <div class="col1">
-                     <div class="card">
-                        <div class="front">
-                           <div class="type">
-                              <img class="bankid" />
-                           </div>
-                           <span class="chip"></span>
-                           <span class="card_number">&#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; </span>
-                           <div class="date"><span class="date_value">MM / YYYY</span></div>
-                           <span class="fullname">FULL NAME</span>
-                        </div>
-                        <div class="back">
-                           <div class="magnetic"></div>
-                           <div class="bar"></div>
-                           <span class="seccode">&#x25CF;&#x25CF;&#x25CF;</span>
-                           <span class="chip"></span
-                           ><span class="disclaimer"
-                              >This card is property of Random Bank of Random corporation. <br />
-                              If found please return to Random Bank of Random corporation - 21968 Paris, Verdi Street, 34
-                           </span>
-                        </div>
+      <div class="container">
+         <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <div class="col1 md:col-span-6">
+               <div class="card">
+                  <div class="front">
+                     <div class="type">
+                        <img class="bankid" />
                      </div>
+                     <span class="chip"></span>
+                     <span class="card_number">&#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; &#x25CF;&#x25CF;&#x25CF;&#x25CF; </span>
+                     <div class="date"><span class="date_value">MM / YYYY</span></div>
+                     <span class="fullname">FULL NAME</span>
                   </div>
-                  <div class="col2">
-                     <label>Card Number</label>
-                     <input class="number" type="text" ng-model="ncard" maxlength="19" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
-                     <label>Cardholder name</label>
-                     <input class="inputname" type="text" placeholder="" />
-                     <label>Expiry date</label>
-                     <input class="expire" type="text" placeholder="MM / YYYY" />
-                     <label>Security Number</label>
-                     <input class="ccv" type="text" placeholder="CVC" maxlength="3" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
-                     <br />
-                     <a class="text-center" href="{{img_url}}" target="_blank">
-                        <button class="btn btn-success py-2 px-2 text-center">Verify qr code</button>
-                     </a>
-                     &nbsp
-                     <span><a href="{% url 'successful' %}" class="btn btn-primary py-2 px-4 text-center">Pay ₹600</a></span>
+                  <div class="back">
+                     <div class="magnetic"></div>
+                     <div class="bar"></div>
+                     <span class="seccode">&#x25CF;&#x25CF;&#x25CF;</span>
+                     <span class="chip"></span
+                     ><span class="disclaimer"
+                        >This card is property of Random Bank of Random corporation. <br />
+                        If found please return to Random Bank of Random corporation - 21968 Paris, Verdi Street, 34
+                     </span>
                   </div>
                </div>
+            </div>
+
+            <div class="md:col-span-5 md:pl-5">
+               <label>Card Number</label>
+               <input class="number" type="text" ng-model="ncard" maxlength="19" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+               <label>Cardholder name</label>
+               <input class="inputname" type="text" placeholder="" />
+               <label>Expiry date</label>
+               <input class="expire" type="text" placeholder="MM / YYYY" />
+               <label>Security Number</label>
+               <input class="ccv" type="text" placeholder="CVC" maxlength="3" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
+               <br />
+               <a class="text-center" href="{{img_url}}" target="_blank">
+                  <button class="btn btn-success py-2 px-2 text-center">Verify qr code</button>
+               </a>
+               &nbsp
+               <span><a href="{% url 'successful' %}" class="btn btn-primary py-2 px-4 text-center">Pay ₹600</a></span>
             </div>
          </div>
       </div>
    </div>
 </section>
-<!-- .section -->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script>

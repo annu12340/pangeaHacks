@@ -1,7 +1,7 @@
 {% extends 'layout.html' %} {% load static %} {% block content %}
 
 <section class="ftco-section">
-   <h1 class="title text-center">QR code generation</h1>
+   <h1 class="h2 text-center">QR code generation</h1>
    <div class="container">
       <div class="row justify-content-center">
          <div class="col-xl-10">
@@ -59,16 +59,6 @@
                         <input name="postcode" type="text" class="form-control" placeholder="" />
                      </div>
                   </div>
-
-                  <div class="w-100"></div>
-                  <div class="col-md-12">
-                     <div class="form-group mt-4">
-                        <div class="radio">
-                           <label class="mr-3"><input name="" type="radio" name="optradio" /> Create an Account? </label>
-                           <label><input name="" type="radio" name="optradio" /> Ship to different address</label>
-                        </div>
-                     </div>
-                  </div>
                </div>
                <br />
                <div class="text-center"><button class="btn btn-success py-3 px-4 text-center" type="submit">Generate QR Code</button></div>
@@ -78,6 +68,5 @@
       </div>
    </div>
 </section>
-<!-- .section -->
 
 {% endblock %}

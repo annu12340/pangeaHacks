@@ -477,6 +477,7 @@ body {
    margin-bottom: 20px;
 }
 .footer {
+   margin-top: 5%;
    font-family: var(--ff-roboto);
 }
 .footer-top {
@@ -704,4 +705,40 @@ a.footer-link:is(:hover, :focus) {
       grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
       gap: 50px;
    }
+}
+
+input {
+   width: 100%;
+   height: 100%;
+   border: none;
+   background-color: #e1e1e1;
+   border-radius: 8px;
+   font-size: 15px;
+   font-weight: 500;
+   padding: 0 40px 0 16px;
+   box-shadow: 0 0 0 2px rgba(134, 140, 160, 0.02);
+   background-position: 96%;
+   color: #030303;
+   height: 46px;
+   display: flex;
+   width: 100%;
+}
+
+/* Checkout succesfull page */
+.payment__container {
+   border-radius: 1.25rem;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: space-evenly;
+}
+
+.payment__container-tickmark {
+   width: 50px !important;
+}
+
+.payment__container-heading {
+   margin-bottom: 20px;
+   font-size: 2rem;
+   color: #282626;
 }
