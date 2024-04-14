@@ -16,7 +16,8 @@ def shop_page(request):
 def product_details(request, product_id):
     product_details = Product.objects.get(id=product_id)
     ctg = Category.objects.get(name=product_details.category)
-    related_products = Product.objects.filter(category=ctg)
+    # related_products = Product.objects.filter(category="ds") 
+    related_products = Product.objects.all()#TODO
     context = {
         'product': product_details,
         'related_products': related_products

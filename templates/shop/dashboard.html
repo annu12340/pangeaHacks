@@ -1,28 +1,150 @@
 {% extends 'layout.html' %} {% load static %} {% block content %}
 <div class="main-container">
-   <div class="small-header anim" style="--delay: 0.3s">Most Popular</div>
-   <div class="products">
-      {% for product in products %}
-      <a href="{% url 'product-details' product.id %}" style="text-decoration: none; color: inherit">
-         <div class="product anim" style="--delay: 0.4s">
-            <div class="product-wrapper">
-               <img class="product-img" src="{{ product.photo.url }}" alt="{{ product.name }}" />
-               <div class="heart-img__wrapper product-like">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check">
-                     <path d="M20 6L9 17l-5-5" />
-                  </svg>
-                  <img class="heart-img" src="http://www.downloadclipart.net/medium/dark-red-heart-transparent-background.png" />
-               </div>
-            </div>
-            <div class="product-name">{{ product.name }}</div>
-            <div class="product-price">₹ {{ product.price }}</div>
-            <div class="product-rating">
-               <div class="product-rating">{{ product.rating }} <i class="ion-ios-star"></i>&nbsp;&nbsp; | &nbsp; ({{ product.count }} )</div>
-            </div>
+   <article>
+      <section class="section hero" style="background-image: url('https://i.ibb.co/S7YsCQD/hero-banner.png')">
+         <div class="container">
+            <h2 class="h1 hero-title">New Summer <strong>Shoes Collection</strong></h2>
+
+            <p class="hero-text">Competently expedite alternative benefits whereas leading-edge catalysts for change. Globally leverage existing an expanded array of leadership.</p>
+
+            <button class="btn btn-primary">
+               <span>Shop Now</span>
+
+               <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+            </button>
          </div>
-      </a>
-      {% endfor %}
-   </div>
+      </section>
+
+      <section class="section product">
+         <div class="container">
+            <h2 class="h2 section-title">Bestsellers Products</h2>
+
+            <ul class="filter-list">
+               <li>
+                  <button class="filter-btn active">All</button>
+               </li>
+
+               <li>
+                  <button class="filter-btn">Nike</button>
+               </li>
+
+               <li>
+                  <button class="filter-btn">Adidas</button>
+               </li>
+
+               <li>
+                  <button class="filter-btn">Puma</button>
+               </li>
+
+               <li>
+                  <button class="filter-btn">Bata</button>
+               </li>
+
+               <li>
+                  <button class="filter-btn">Apex</button>
+               </li>
+            </ul>
+
+            <ul class="product-list">
+               {% for product in products %}
+               <li class="product-item">
+                  <a href="{% url 'product-details' product.id %}" style="text-decoration: none; color: inherit">
+                     <div class="product-card" tabindex="0">
+                        <figure class="card-banner">
+                           <img src="./assets/images/product-1.jpg" width="312" height="350" loading="lazy" alt="Running Sneaker Shoes" class="image-contain" />
+
+                           <div class="card-badge">New</div>
+
+                           <ul class="card-action-list">
+                              <li class="card-action-item">
+                                 <button class="card-action-btn" aria-labelledby="card-label-1">
+                                    <ion-icon name="cart-outline"></ion-icon>
+                                 </button>
+
+                                 <div class="card-action-tooltip" id="card-label-1">Add to Cart</div>
+                              </li>
+                              <li class="card-action-item">
+                                 <button class="card-action-btn" aria-labelledby="card-label-2">
+                                    <ion-icon name="heart-outline"></ion-icon>
+                                 </button>
+
+                                 <div class="card-action-tooltip" id="card-label-2">Add to Whishlist</div>
+                              </li>
+
+                              <li class="card-action-item">
+                                 <button class="card-action-btn" aria-labelledby="card-label-3">
+                                    <ion-icon name="eye-outline"></ion-icon>
+                                 </button>
+
+                                 <div class="card-action-tooltip" id="card-label-3">Quick View</div>
+                              </li>
+
+                              <li class="card-action-item">
+                                 <button class="card-action-btn" aria-labelledby="card-label-4">
+                                    <ion-icon name="repeat-outline"></ion-icon>
+                                 </button>
+
+                                 <div class="card-action-tooltip" id="card-label-4">Compare</div>
+                              </li>
+                           </ul>
+                        </figure>
+
+                        <div class="card-content">
+                           <div class="card-cat">
+                              <a href="#" class="card-cat-link">Men</a> /
+                              <a href="#" class="card-cat-link">Women</a>
+                           </div>
+
+                           <h3 class="h3 card-title">
+                              <a href="#">{{ product.name }}</a>
+                           </h3>
+
+                           <data class="card-price" value="180.85">{{ product.price }}</data>
+                        </div>
+                     </div>
+                  </a>
+               </li>
+
+               {% endfor %}
+            </ul>
+         </div>
+      </section>
+
+      <section class="section cta">
+         <div class="container">
+            <ul class="cta-list">
+               <li>
+                  <div class="cta-card" style="background-image: url('https://i.ibb.co/2gjg3Qj/insta-6.jpg')">
+                     <p class="card-subtitle">Adidas Shoes</p>
+
+                     <h3 class="h2 card-title">The Summer Sale Off 50%</h3>
+
+                     <a href="#" class="btn btn-link">
+                        <span>Shop Now</span>
+
+                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                     </a>
+                  </div>
+               </li>
+
+               <li>
+                  <div class="cta-card" style="background-image: url('https://i.ibb.co/2gjg3Qj/insta-6.jpg')">
+                     <p class="card-subtitle">Nike Shoes</p>
+
+                     <h3 class="h2 card-title">Makes Yourself Keep Sporty</h3>
+
+                     <a href="#" class="btn btn-link">
+                        <span>Shop Now</span>
+
+                        <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
+                     </a>
+                  </div>
+               </li>
+            </ul>
+         </div>
+      </section>
+   </article>
+   <div class="products"></div>
    <!-- ------------------ -->
    <br /><br />
 </div>
