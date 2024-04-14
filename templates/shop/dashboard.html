@@ -51,10 +51,9 @@
                   <a href="{% url 'product-details' product.id %}" style="text-decoration: none; color: inherit">
                      <div class="product-card" tabindex="0">
                         <figure class="card-banner">
-                           <img src="./assets/images/product-1.jpg" width="312" height="350" loading="lazy" alt="Running Sneaker Shoes" class="image-contain" />
+                           <img src="{{ product.photo.url }}" alt="{{ product.name }}" width="312" height="350" loading="lazy" class="image-contain" />
 
                            <div class="card-badge">New</div>
-
                            <ul class="card-action-list">
                               <li class="card-action-item">
                                  <button class="card-action-btn" aria-labelledby="card-label-1">
