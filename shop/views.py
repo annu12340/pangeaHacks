@@ -27,7 +27,7 @@ def product_details(request, product_id):
 
 
 def checkout(request):
-    return render(request, 'checkout.html')
+    return render(request, 'payment.html')
 
 
 def successful(request):
