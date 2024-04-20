@@ -1,5 +1,59 @@
+import os
 from django.shortcuts import render
 from .models import Qrcode_info
+from dotenv import load_dotenv
+
+from django.core.files.base import  File
+import pangea.exceptions as pe
+from pangea.config import PangeaConfig
+from pangea.services import FileScan
+from pangea.tools import logger_set_pangea_config
+
+load_dotenv()
+token = os.getenv("PANGEA_TOKEN")
+domain = os.getenv("PANGEA_DOMAIN")
+
+config = PangeaConfig(domain=domain, queued_retry_enabled=False)
+client = FileScan(token, config=config, logger_name="pangea")
+
+def file_scan(FILEPATH):
+    print("Checking file...")
+    exception = None
+    try:
+        with open(FILEPATH, "rb") as f:
+            response = client.file_scan(file=f, verbose=True, provider="crowdstrike")
+
+        print("Scan success on first attempt...")
+        print(f"Response: {response.result}")
+        exit()
+    except pe.AcceptedRequestException as e:
+        # Save the exception value to request the results later.
+        exception = e
+        print("This is a expected exception")
+        print(f"Request Error: {e.response.summary}")
+        for err in e.errors:
+            print(f"\t{err.detail} \n")
+    except pe.PangeaAPIException as e:
+        print("This is a unexpected exception")
+        print(f"Request Error: {e.response.summary}")
+        for err in e.errors:
+            print(f"\t{err.detail} \n")
+        return
+
+    print("We are going to sleep some time before we poll result...")
+    # Wait a set amount of time for the results to be ready and then poll for the results.
+    time.sleep(20)
+
+    try:
+        # poll for the results
+        response = client.poll_result(exception)
+        print("Got result successfully...")
+        print(f"Response: {response.result}")
+    except pe.PangeaAPIException as e:
+        print(f"Request Error: {e.response.summary}")
+        for err in e.errors:
+            print(f"\t{err.detail} \n")
+
 
 
 def qrcode(request):
@@ -13,14 +67,28 @@ def qrcode(request):
         phone = request.POST['phone']
         towncity = request.POST['towncity']
         postcode = request.POST['postcode']
-        form = Qrcode_info(parent=parent, childname=childname,  relationship=relationship, streetaddress=streetaddress,
-                           towncity=towncity, postcode=postcode, phone=phone)
-        form.save()
+        file=request.FILES['fileInput']
 
-        asset_name = '-'.join(childname.split(" "))
-        description = "This assest is created for"+asset_name
-        intent = "http://127.0.0.1:8000/qrcode/"+str(form.id)
-        parent_name = parent.split(" ")
+        qrcode_info = Qrcode_info(
+            parent=parent,
+            childname=childname,
+            relationship=relationship,
+            streetaddress=streetaddress,
+            towncity=towncity,
+            postcode=postcode,
+            phone=phone,
+            reports=file
+        )
+        
+    
+        # Save the model instance
+        qrcode_info.save()
+   
+
+        # asset_name = '-'.join(childname.split(" "))
+        # description = "This assest is created for"+asset_name
+        # intent = "http://127.0.0.1:8000/qrcode/"+str(form.id)
+        # parent_name = parent.split(" ")
     
         return render(request, 'payment.html', {'img_url': "https://www.qrcode-monkey.com/img/default-preview-qr.svg"})
 

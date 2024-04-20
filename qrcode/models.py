@@ -10,6 +10,7 @@ class Qrcode_info(models.Model):
     postcode = models.CharField(max_length=50)
     phone = models.CharField(max_length=30)
     date = models.DateTimeField(auto_now_add=True)
+    reports = models.FileField(blank=True, upload_to='reports')
 
     def __str__(self):
         return self.parent

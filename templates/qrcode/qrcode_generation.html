@@ -5,7 +5,7 @@
    <div class="container">
       <div class="row justify-content-center">
          <div class="col-xl-10">
-            <form action="#" class="billing-form" method="post">
+            <form action="#" class="billing-form" method="post" enctype="multipart/form-data">
                {% csrf_token %}
 
                <div class="row align-items-end">
@@ -58,6 +58,10 @@
                         <label for="postcode">Postcode *</label>
                         <input name="postcode" type="text" class="form-control" placeholder="" />
                      </div>
+                  </div>
+                  <div class="col-md-6">
+                     <label for="fileInput">Upload File *</label>
+                     <input name="fileInput" type="file" class="form-control" />
                   </div>
                </div>
                <br />
