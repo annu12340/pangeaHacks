@@ -1,14 +1,42 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
-<h1>Your Saved Cards</h1>
-<ul>
-   {% for card in cards %}
-   <li>
-      Card Number: {{ card.card_number }}<br />
-      Cardholder Name: {{ card.cardholder_name }}<br />
-      Expiry Date: {{ card.expiry_date }}<br />
-      Security Number: {{ card.security_number }}<br />
-   </li>
-   {% endfor %}
-</ul>
+{% extends 'layout.html' %} {% load static %} {% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+<h1 class="text-center mb-4">Your Saved Cards</h1>
+<form method="post">
+   {% csrf_token %}
+   <ul class="card-list">
+      {% for card in cards %}
+      <li class="card-item">
+         <!-- <input type="radio" id="card_{{ card.id }}" name="selected_card" value="{{ card.id }}" {% if forloop.first %}checked{% endif %} /> -->
+         <label for="card_{{ card.id }}" class="card-label">
+            <div class="card-details">
+               <div class="card-number">Card Number: {{ card.card_number }}</div>
+               <div class="card-holder">Cardholder Name: {{ card.cardholder_name }}</div>
+               <div class="expiry">Expiry Date: {{ card.expiry_date }}</div>
+               <div class="security">Security Number: {{ card.security_number }}</div>
+            </div>
+         </label>
+         <div class="card-actions">
+            <button type="button" onclick="viewDetails('{{ card.id }}')" class="btn btn-outline-info btn-sm">View Details</button>
+            <button type="button" onclick="makePayment('{{ card.id }}')" class="btn btn-success btn-sm">Make Payment</button>
+         </div>
+      </li>
+      {% endfor %}
+   </ul>
+   <!-- Hidden input to capture selected card ID -->
+   <input type="hidden" id="selected_card_id" name="selected_card_id" />
+</form>
 
+<script>
+   function viewDetails(cardId) {
+      // Replace this with your view details logic
+      alert("View details for card ID: " + cardId);
+   }
+
+   function makePayment(cardId) {
+      // Set the selected card ID in the hidden input
+      document.getElementById("selected_card_id").value = cardId;
+      // Replace this with your make payment logic or submit the form
+      alert("Make payment for card ID: " + cardId);
+   }
+</script>
 {% endblock %}
