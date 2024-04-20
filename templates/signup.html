@@ -1,59 +1,29 @@
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/style.min.css' %}">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>signup</title>
-     {% include 'navbar.html'%}
-    </head>
-    <div class="bg-gray-900">
-    <form method="post" action="">
-        {% csrf_token %}
-   <div class="bg-grey-lighter min-h-screen flex flex-col">
-            <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-                <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-                    <h1 class="mb-8 text-3xl text-center">Sign up</h1>
-                    <input
-                        type="text"
-                        class="block border border-grey-light w-full p-3 rounded mb-4"
-                        name="username"
-                        placeholder="UserName" required />
+{% extends 'index.html' %} {% block content %}
 
-                    <input
-                        type="text"
-                        class="block border border-grey-light w-full p-3 rounded mb-4"
-                        name="email"
-                        placeholder="Email" required />
+<div class="bg-gray-900">
+   <form method="post" action="">
+      {% csrf_token %}
+      <div class="bg-grey-lighter min-h-screen flex flex-col">
+         <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+            <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+               <h1 class="mb-8 text-3xl text-center">Sign up</h1>
+               <input type="text" class="block border border-grey-light w-full p-3 rounded mb-4" name="username" placeholder="UserName" required />
 
-                    <input
-                        type="password"
-                        class="block border border-grey-light w-full p-3 rounded mb-4"
-                        name="password"
-                        placeholder="Password" required/>
-                    <input
-                        type="password"
-                        class="block border border-grey-light w-full p-3 rounded mb-4"
-                        name="confirm_password"
-                        placeholder="Confirm Password" required />
+               <input type="text" class="block border border-grey-light w-full p-3 rounded mb-4" name="email" placeholder="Email" required />
 
-                    <button
-                        type="submit"
-                        class="w-full text-center py-3 rounded bg-blue-900 text-white hover:bg-blue-600 focus:outline-none my-1"
-                    >Create Account</button>
+               <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4" name="password" placeholder="Password" required />
+               <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4" name="confirm_password" placeholder="Confirm Password" required />
 
-                <div class="text-grey-dark mt-2">
-                    Already have an account?
-                    <a class="no-underline border-b border-blue text-blue" href="{% url 'login' %}">
-                        Log in
-                    </a>.
-                </div>
+               <button type="submit" class="w-full text-center py-3 rounded bg-blue-900 text-white hover:bg-blue-600 focus:outline-none my-1">Create Account</button>
+
+               <div class="text-grey-dark mt-2">
+                  Already have an account?
+                  <a class="no-underline border-b border-blue text-blue" href="{% url 'login' %}"> Log in </a>.
+               </div>
             </div>
-        </div>
          </div>
-</form>
-    </div>
-<body>
 
-</body>
-</html>
+         {% endblock %}
+      </div>
+   </form>
+</div>

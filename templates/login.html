@@ -1,33 +1,25 @@
-{% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'base.css' %}" />
-<!DOCTYPE html>
-<html lang="en">
-   <head>
-      <meta charset="UTF-8" />
-      <title>login</title>
-      {% include 'navbar.html'%}
-   </head>
-   <div class="bg-gray-900">
-      <form method="post" action="">
-         {% csrf_token %}
-         <div class="bg-grey-lighter min-h-screen flex flex-col">
-            <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-               <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
-                  <h1 class="mb-8 text-3xl text-center">Log in</h1>
+{% extends 'index.html' %} {% block content %}
+<div class="bg-gray-900">
+   <form method="post" action="">
+      {% csrf_token %}
+      <div class="bg-grey-lighter min-h-screen flex flex-col">
+         <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
+            <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+               <h1 class="mb-8 text-3xl text-center">Log in</h1>
 
-                  <input type="text" class="block border border-grey-light w-full p-3 rounded mb-4" name="username" placeholder="Email" required />
+               <input type="text" class="block border border-grey-light w-full p-3 rounded mb-4" name="username" placeholder="Email" required />
 
-                  <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4" name="password" placeholder="Password" required />
-                  <button type="submit" class="w-full text-center py-3 rounded bg-blue-900 text-white hover:bg-blue-600 focus:outline-none my-1">login into Account</button>
+               <input type="password" class="block border border-grey-light w-full p-3 rounded mb-4" name="password" placeholder="Password" required />
+               <button type="submit" class="w-full text-center py-3 rounded bg-blue-900 text-white hover:bg-blue-600 focus:outline-none my-1">login into Account</button>
 
-                  <div class="text-grey-dark mt-2">
-                     Don't have an account?
-                     <a class="no-underline border-b border-blue text-blue" href="{% url 'signup' %}"> Sign up </a>.
-                  </div>
+               <div class="text-grey-dark mt-2">
+                  Don't have an account?
+                  <a class="no-underline border-b border-blue text-blue" href="{% url 'signup' %}"> Sign up </a>.
                </div>
             </div>
          </div>
-      </form>
-   </div>
-   <body></body>
-</html>
+      </div>
+   </form>
+</div>
+
+{% endblock %}
