@@ -21,3 +21,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+class CreditCard(models.Model):
+    card_number = models.CharField(max_length=16)  # Assuming card numbers are 16 digits
+    cardholder_name = models.CharField(max_length=100)
+    expiry_date = models.CharField(max_length=7)   # Assuming MM/YYYY format
+    security_number = models.CharField(max_length=3)  # Assuming security numbers are 3 digits
+
+    def __str__(self):
+        return f"Credit Card: {self.card_number}"

@@ -1,6 +1,6 @@
 import os
 from django.shortcuts import redirect, render
-from .models import Category, Product
+from .models import Category, Product, CreditCard
 from pangea.config import PangeaConfig
 from pangea.services import Audit, UserIntel, Embargo, FileScan, DomainIntel
 from pangea.services.intel import HashType
@@ -41,6 +41,21 @@ def product_details(request, product_id):
 
 
 def checkout(request):
+    if request.POST:
+        card_number = request.POST.get('card_number', '')
+        cardholder_name = request.POST.get('cardholder_name', '')
+        expiry_date = request.POST.get('expiry_date', '')
+        security_number = request.POST.get('security_number', '')
+        card_info = CreditCard(
+            card_number=card_number,
+            cardholder_name=cardholder_name,
+            expiry_date=expiry_date,
+            security_number=security_number,
+        )
+        
+
+        card_info.save()
+        render(request, 'succesfull.html')
     return render(request, 'payment.html')
 
 
