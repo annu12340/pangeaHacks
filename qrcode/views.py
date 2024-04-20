@@ -1,9 +1,11 @@
-import os
+import os, time
+from pathlib import Path
 from django.shortcuts import render
+
 from .models import Qrcode_info
 from dotenv import load_dotenv
 
-from django.core.files.base import  File
+
 import pangea.exceptions as pe
 from pangea.config import PangeaConfig
 from pangea.services import FileScan
@@ -16,12 +18,16 @@ domain = os.getenv("PANGEA_DOMAIN")
 config = PangeaConfig(domain=domain, queued_retry_enabled=False)
 client = FileScan(token, config=config, logger_name="pangea")
 
-def file_scan(FILEPATH):
+def file_scan(file):
     print("Checking file...")
+    # TODO: Fix this
+    # file_path = os.path.join("C:\\Users\\admin\\Desktop\\pangeaHacks\\media\\reports", str(f"/reports/{file}"))
+    file_path=f"C:\\Users\\admin\\Desktop\\pangeaHacks\\media\\reports\\testfile.pdf"
+    print("file_path",file_path)
     exception = None
     try:
-        with open(FILEPATH, "rb") as f:
-            response = client.file_scan(file=f, verbose=True, provider="crowdstrike")
+        with open(file_path, "rb") as f:
+            response = client.file_scan(file=f, verbose=True)
 
         print("Scan success on first attempt...")
         print(f"Response: {response.result}")
@@ -67,7 +73,10 @@ def qrcode(request):
         phone = request.POST['phone']
         towncity = request.POST['towncity']
         postcode = request.POST['postcode']
-        file=request.FILES['fileInput']
+        file=request.FILES.get('fileInput')
+        
+    
+
 
         qrcode_info = Qrcode_info(
             parent=parent,
@@ -83,6 +92,7 @@ def qrcode(request):
     
         # Save the model instance
         qrcode_info.save()
+        # file_scan(file)
    
 
         # asset_name = '-'.join(childname.split(" "))
