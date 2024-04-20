@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<h1>Your Saved Cards</h1>
+<ul>
+   {% for card in cards %}
+   <li>
+      Card Number: {{ card.card_number }}<br />
+      Cardholder Name: {{ card.cardholder_name }}<br />
+      Expiry Date: {{ card.expiry_date }}<br />
+      Security Number: {{ card.security_number }}<br />
+   </li>
+   {% endfor %}
+</ul>
+
+{% endblock %}
