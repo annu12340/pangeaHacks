@@ -100,7 +100,7 @@ def qrcode(request):
         # intent = "http://127.0.0.1:8000/qrcode/"+str(form.id)
         # parent_name = parent.split(" ")
     
-        return render(request, 'payment.html', {'img_url': "https://www.qrcode-monkey.com/img/default-preview-qr.svg"})
+        return render(request, 'payment/card_list.html', {'img_url': "https://www.qrcode-monkey.com/img/default-preview-qr.svg"})
 
  
     return render(request, 'qrcode/qrcode_generation.html')

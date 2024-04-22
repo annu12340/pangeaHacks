@@ -15,9 +15,6 @@ load_dotenv()
 config = PangeaConfig(domain=os.getenv("PANGEA_DOMAIN"))  
 
 
-def index(request):
-    return render(request,'index.html')
-
 
 # @login_required(login_url='login')
 # def homePage(request):
@@ -34,25 +31,28 @@ def index(request):
 #     context = {'users': users,'subjects':subjects}
 #     return render(request, 'index.html', context)
 
+def index(request):
+    print("request.user.idrequest.user.idrequest.user.id",request.user.id)
+    return render(request,'index.html')
+
 
 def signUp(request):
-    # if request.user.is_authenticated:
-    #     return redirect('index')
-    # if request.user.is_authenticated:
-    #     return redirect('index')
-    # else:
+    if request.user.is_authenticated:
+        return redirect('index')
+    if request.user.is_authenticated:
+        return redirect('index')
+    else:
 
-    #     if request.method == 'POST':
-    #         username = request.POST.get('username')
-    #         password1 = request.POST.get('password')
-    #         password2 = request.POST.get('confirm_password')
-    #         email = request.POST.get('email')
-    #         usernameIsUnique = not (User.objects.filter(username=username).exists())
-    #         emailIsUnique = not (User.objects.filter(email=email).exists())
-    #         if password1 == password2 and usernameIsUnique and emailIsUnique:
-    #             User.objects.create_user(username= username, email=email, password=password1).save()
-    #             return redirect('login')
-
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password1 = request.POST.get('password')
+            password2 = request.POST.get('confirm_password')
+            email = request.POST.get('email')
+            usernameIsUnique = not (User.objects.filter(username=username).exists())
+            emailIsUnique = not (User.objects.filter(email=email).exists())
+            if password1 == password2 and usernameIsUnique and emailIsUnique:
+                User.objects.create_user(username= username, email=email, password=password1).save()
+                return redirect('login')
     context = {}
     return render(request,'signup.html',context)
 
