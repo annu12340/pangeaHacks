@@ -42,3 +42,26 @@
    background-color: #28a745;
    border: 1px solid #28a745;
 }
+
+/* QR Code details */
+/* Define CSS for the qrcode-details class */
+.qrcode-section {
+   padding: 20px;
+   background-color: #f8f9fa;
+   border-radius: 10px;
+}
+
+/* Define CSS for the description section */
+.description {
+   margin-bottom: 20px;
+}
+
+.description p {
+   margin-bottom: 10px;
+   color: #343a40; /* Text color */
+}
+
+.description h4 {
+   margin-bottom: 5px;
+   color: #6c757d; /* Heading color */
+}
