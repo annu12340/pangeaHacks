@@ -1,6 +1,6 @@
 import os, time
 from pathlib import Path
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import segno
 
 from .models import Qrcode_info
@@ -63,7 +63,7 @@ def file_scan(file):
 
 
 
-def qrcode(request):
+def qrcode(request,product_id):
     if request.POST:
         print("********************************")
         parent = request.POST['parent']
@@ -105,7 +105,7 @@ def qrcode(request):
             data_dark="darkblue",
         )
     
-        return render(request, 'payment/card_list.html', {'img_url': "https://www.qrcode-monkey.com/img/default-preview-qr.svg"})
+        return redirect('checkout', product_id=product_id)
 
  
     return render(request, 'qrcode/qrcode_generation.html')
