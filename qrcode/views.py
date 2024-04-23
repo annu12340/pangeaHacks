@@ -1,10 +1,11 @@
 import os, time
 from pathlib import Path
 from django.shortcuts import render
+import segno
 
 from .models import Qrcode_info
 from dotenv import load_dotenv
-
+from backend import settings
 
 import pangea.exceptions as pe
 from pangea.config import PangeaConfig
@@ -94,11 +95,15 @@ def qrcode(request):
         qrcode_info.save()
         # file_scan(file)
    
-
-        # asset_name = '-'.join(childname.split(" "))
-        # description = "This assest is created for"+asset_name
-        # intent = "http://127.0.0.1:8000/qrcode/"+str(form.id)
-        # parent_name = parent.split(" ")
+        # Generating the QR Code
+        qrcode_data = "http://127.0.0.1:8000/qrcode/"+str(qrcode_info.id)
+        qrcode = segno.make_qr(qrcode_data)
+        qrcode.save(
+            f"{settings.MEDIA_ROOT}/qrcode/{qrcode_info.id}.png",
+            scale=5,
+            dark="blue",
+            data_dark="darkblue",
+        )
     
         return render(request, 'payment/card_list.html', {'img_url': "https://www.qrcode-monkey.com/img/default-preview-qr.svg"})
 
