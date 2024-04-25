@@ -20,7 +20,7 @@ from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
 import users
 
 urlpatterns = [
-path('users/', include('users.urls')),
+path('', include('users.urls')),
 path('shop/', include('shop.urls')),
 path('qrcode/', include('qrcode.urls')),
 path('admin/', admin.site.urls),

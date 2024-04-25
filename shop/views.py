@@ -77,12 +77,16 @@ def new_card(request, product_id):
         )
     
         card_info.save()
+        print("redircting to list_cards")
         redirect('list_cards', product_id=product_id)
-  
-    return render(request, 'payment/add_new_card.html', {'product_id': product_id})
+    else:
+        return render(request, 'payment/add_new_card.html', {'product_id': product_id})
 
 def list_cards(request, product_id):
         print("reached here")
+        products = Product.objects.filter(id=product_id)
+        print("productsproductsproducts",products)
+        
         user_cards = CreditCard.objects.filter(user_id=request.user.id)
         return render(request, 'payment/card_list.html', {'cards': user_cards,'product_id':product_id})    
 
