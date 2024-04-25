@@ -1,18 +1,10 @@
 /* List cards in payment */
-.card-list {
-   list-style-type: none;
-   padding-left: 0;
-}
 
 .card-item {
    border: 1px solid #ccc;
    border-radius: 5px;
    margin-bottom: 10px;
-   margin-left: 15%;
-   margin-right: 15%;
    padding: 10px;
-   display: flex;
-   align-items: center;
 }
 
 .card-item:hover {
@@ -24,18 +16,14 @@
    flex-grow: 1;
 }
 
-.card-actions {
-   margin-left: auto;
-}
-
 .card-actions button {
-   margin-left: 10px;
    padding: 5px 10px;
-   margin-bottom: 5%;
    border-radius: 3px;
    cursor: pointer;
-   text-transform: uppercase;
    font-size: 14px;
+   display: flex;
+   align-items: center;
+   margin-bottom: 2%;
 }
 .btn-success {
    color: #fff;

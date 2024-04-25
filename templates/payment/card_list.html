@@ -1,43 +1,70 @@
 {% extends 'layout.html' %} {% load static %} {% block content %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
-<h1 class="text-center mb-4">Your Saved Cards</h1>
-<form method="post">
-   {% csrf_token %}
-   <ul class="card-list">
-      {% for card in cards %}
-      <li class="card-item">
-         <!-- <input type="radio" id="card_{{ card.id }}" name="selected_card" value="{{ card.id }}" {% if forloop.first %}checked{% endif %} /> -->
-         <label for="card_{{ card.id }}" class="card-label">
-            <div class="card-details">
-               <div class="card-number">Card Number: {{ card.card_number }}</div>
-               <div class="card-holder">Cardholder Name: {{ card.cardholder_name }}</div>
-               <div class="expiry">Expiry Date: {{ card.expiry_date }}</div>
-               <div class="security">Security Number: {{ card.security_number }}</div>
-            </div>
-         </label>
-         <div class="card-actions">
-            <button type="button" onclick="viewDetails('{{ card.id }}')" class="btn btn-outline-info btn-sm">View Details</button>
-
-            <a href="{% url 'payment' product_id %}"> <button type="button" class="btn btn-success btn-sm">Make payment</button></a>
+<section class="content">
+  <h1>Checkout</h1>
+   <div class="details shadow">
+      <div class="details__item">
+         <div class="item__image">
+            <img class="iphone" src="https://www.apple.com/v/iphone/compare/k/images/overview/compare_iphoneXSmax_silver_large.jpg" alt="">
          </div>
-      </li>
-      {% endfor %}
-   </ul>
-   <!-- Hidden input to capture selected card ID -->
-   <input type="hidden" id="selected_card_id" name="selected_card_id" />
-</form>
+         <div class="item__details">
+            <div class="item__title">
+               Iphone X
+            </div>
+            <div class="item__price">
+               {{product.price}}
+            </div>
+            <div class="item__quantity">
+               Quantity: 1
+            </div>
+            <div class="item__description">
+               <ul >
+                  <li>Super fast and power efficient</li>
+                  <li>A lot of fast memory</li>
+                  <li>High resolution camera</li>
+                  <li>Smart tools for health and traveling and more</li>
+                  <li>Share your games and achievements with your friends via Group Play</li>
+               </ul>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="discount"></div>
+   <div class="container">
+   <div class="payment">
+      <div class="grid  lg:grid-cols-3 gap-6">
+         {% for card in cards %}
+         <div class="payment__type payment__type--cc ">
+            <div class="card-details">
+               <div class="card-number">Card Number: {{ card.card_number | truncatechars:30  }}</div>
+               <div class="card-holder">Cardholder Name: {{ card.cardholder_name  }}</div>
+               <div class="expiry">Expiry Date: {{ card.expiry_date   }}</div>
+               <div class="security">Security Number: {{ card.security_number |truncatechars:30  }}</div>
+               <div class="card-actions"> <a href="{% url 'payment' product_id %}"> <button type="button" class="btn btn-success btn-sm">Make payment</button></a>
+                  <button type="button" onclick="viewDetails('{{ card.id }}')" class=" btn btn-outline-info btn-sm">View Details</button>
+               </div>
+            </div>
+         </div>
+         {% endfor %}
+      </div>
+      <div class="gird lg:grid-cols-4 ">
+        <div class="payment__shipping">
+          <div class="payment__title">
+            <i class="icon icon-plane"></i> Shiping Information
+          </div>
+          <div class="details__user">
+            <div class="user__name">John Doe
+              <br> 13/03/1980</div>
+            <div class="user__address">Shipping Address: 22 Street, Address
+              <br>Country</div>
+          </div>
 
-<script>
-   function viewDetails(cardId) {
-      // Replace this with your view details logic
-      alert("View details for card ID: " + cardId);
-   }
+        </div>
+      </div>
+      </div>
+   </div>
 
-   function makePayment(cardId) {
-      // Set the selected card ID in the hidden input
-      document.getElementById("selected_card_id").value = cardId;
-      // Replace this with your make payment logic or submit the form
-      alert("Make payment for card ID: " + cardId);
-   }
-</script>
+</section>
+</div>
+
 {% endblock %}
