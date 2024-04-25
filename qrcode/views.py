@@ -9,7 +9,7 @@ from backend import settings
 
 import pangea.exceptions as pe
 from pangea.config import PangeaConfig
-from pangea.services import FileScan
+from pangea.services import FileScan, FileIntel
 from pangea.tools import logger_set_pangea_config
 
 load_dotenv()
@@ -19,11 +19,11 @@ domain = os.getenv("PANGEA_DOMAIN")
 config = PangeaConfig(domain=domain, queued_retry_enabled=False)
 client = FileScan(token, config=config, logger_name="pangea")
 
-def file_scan(file):
+def file_scan(file_name):
     print("Checking file...")
     # TODO: Fix this
-    # file_path = os.path.join("C:\\Users\\admin\\Desktop\\pangeaHacks\\media\\reports", str(f"/reports/{file}"))
-    file_path=f"C:\\Users\\admin\\Desktop\\pangeaHacks\\media\\reports\\testfile.pdf"
+    BASE_DIR = Path(__file__).resolve().parent
+    file_path = str(BASE_DIR / "media" / "reports" / file_name)  
     print("file_path",file_path)
     exception = None
     try:
@@ -61,7 +61,8 @@ def file_scan(file):
         for err in e.errors:
             print(f"\t{err.detail} \n")
 
-
+def file_intel(file_name):
+    pass
 
 def qrcode(request,product_id):
     if request.POST:
@@ -93,7 +94,7 @@ def qrcode(request,product_id):
     
         # Save the model instance
         qrcode_info.save()
-        file_scan(file)
+        # file_scan(file)
    
         # Generating the QR Code
         qrcode_data = "http://127.0.0.1:8000/qrcode/"+str(qrcode_info.id)

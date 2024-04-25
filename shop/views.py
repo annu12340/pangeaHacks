@@ -7,17 +7,18 @@ from pangea.services import Audit, UserIntel, Embargo, FileScan, DomainIntel
 from pangea.services.intel import HashType
 from pangea.tools import logger_set_pangea_config
 from pangea.utils import get_prefix, hash_sha256
-from pangea.services.vault.vault import Vault
+
 import pangea.exceptions as pe
 from dotenv import load_dotenv
 
-
+from utils.encrypt_decrypt import encrypt_info, decrypt_info
 load_dotenv()
 config = PangeaConfig(domain=os.getenv("PANGEA_DOMAIN"))  
 audit = Audit(os.getenv("PANGEA_TOKEN"), config=config) 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 def shop_page(request):
+    print("sdfdsfdsfsd",request.user.is_authenticated)
     category = Category.objects.all()
     products = Product.objects.filter()
     context = {
@@ -63,6 +64,10 @@ def new_card(request, product_id):
         cardholder_name = request.POST.get('card_holder', '')
         expiry_date = request.POST.get('card_expiry_date', '')
         security_number = request.POST.get('card_cvv', '')
+
+        # Encrpting and ciphering sensitive card info
+        card_number=encrypt_info(card_number)
+        security_number=encrypt_info(card_number)
         card_info = CreditCard(
             card_number=card_number,
             cardholder_name=cardholder_name,
