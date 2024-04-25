@@ -742,3 +742,54 @@ input {
    font-size: 2rem;
    color: #282626;
 }
+
+/* Payment check mark animation */
+.wrapper {
+   width: 30px;
+   margin: 4em auto 0;
+}
+
+.checkmark {
+   stroke: green;
+   stroke-dashoffset: 745.74853515625;
+   stroke-dasharray: 745.74853515625;
+   animation: dash 2s ease-out forwards infinite;
+}
+
+@keyframes dash {
+   0% {
+      stroke-dashoffset: 745.74853515625;
+   }
+   100% {
+      stroke-dashoffset: 0;
+   }
+}
+
+.wrapper {
+   opacity: 0; /* Initially hide the content */
+   animation: fade-in 0.5s ease forwards; /* Apply fade-in animation */
+}
+
+@keyframes fade-in {
+   from {
+      opacity: 0; /* Start with opacity 0 */
+      transform: translateY(-20px); /* Move content upward */
+   }
+   to {
+      opacity: 1; /* End with opacity 1 */
+      transform: translateY(0); /* Move content back to its original position */
+   }
+}
+
+/* Apply animation delay to each .wrapper */
+.payment-check:nth-child(1) {
+   animation-delay: 0.5s; /* Delay first content by 0.5s */
+}
+
+.payment-check:nth-child(2) {
+   animation-delay: 20s; /* Delay second content by 1s */
+}
+
+.payment-check:nth-child(3) {
+   animation-delay: 35s; /* Delay third content by 1.5s */
+}

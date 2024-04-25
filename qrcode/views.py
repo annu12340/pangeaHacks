@@ -93,7 +93,7 @@ def qrcode(request,product_id):
     
         # Save the model instance
         qrcode_info.save()
-        # file_scan(file)
+        file_scan(file)
    
         # Generating the QR Code
         qrcode_data = "http://127.0.0.1:8000/qrcode/"+str(qrcode_info.id)

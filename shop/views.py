@@ -1,4 +1,4 @@
-import os
+import os, requests
 import stripe
 from django.shortcuts import redirect, render
 from .models import Category, Product, CreditCard
@@ -60,7 +60,6 @@ def new_card(request, product_id):
         print("possting",request.POST)
         
         card_number = request.POST['card_num']
-        print("card_numbercard_numbercard_numbercard_number",card_number)
         cardholder_name = request.POST.get('card_holder', '')
         expiry_date = request.POST.get('card_expiry_date', '')
         security_number = request.POST.get('card_cvv', '')
@@ -80,10 +79,44 @@ def new_card(request, product_id):
 def list_cards(request, product_id):
         print("reached here")
         user_cards = CreditCard.objects.filter(user_id=request.user.id)
-        return render(request, 'payment/card_list.html', {'cards': user_cards})    
+        return render(request, 'payment/card_list.html', {'cards': user_cards,'product_id':product_id})    
+
+def get_public_ip():
+    try:
+        # Use a public IP address API service
+        response = requests.get('https://api64.ipify.org?format=json')
+        if response.status_code == 200:
+            data = response.json()
+            return data['ip']
+        else:
+            return "Failed to retrieve IP address."
+    except Exception as e:
+        return str(e)
+    
 
 
+def payment(request, product_id):
+    ip_addr=get_public_ip()
+    sanction_msg=''
+    token = os.getenv("PANGEA_TOKEN")
+    domain = os.getenv("PANGEA_DOMAIN")
+    config = PangeaConfig(domain=domain)
+    # embargo = Embargo(token, config=config, logger_name="embargo")
+    # logger_set_pangea_config(logger_name=embargo.logger.name)
 
-def success(request):
+    try:
+        # embargo_response = embargo.ip_check(ip=ip_addr)
+        # print(f"Response: {embargo_response.result}")
+        # audit.log(f"A user with ip addresss {ip_addr} has tried to login")
+        # sanctions_count= embargo_response.result.count
+        sanctions_count=0
+        if sanctions_count>=1:
+                print("sanction_msg",sanction_msg)
+                # sanction_msg=embargo_response.result.summary
+    except pe.PangeaAPIException as err:
+        print(f"Embargo Request Error: {err.response.summary}")
+        for er in err.errors:
+            print(f"\t{er.detail} \n")
+
     return render(request, 'succesfull.html')
 

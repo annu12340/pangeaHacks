@@ -2,7 +2,52 @@
 <div class="main-container">
    <div class="payment__container">
       <br /><br /><br /><br /><br />
-      <div class="row">
+      <div class="row payment-check">
+         <ul>
+            <div class="wrapper">
+               <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 98.5 98.5" enable-background="new 0 0 98.5 98.5" xml:space="preserve">
+                  <path
+                     class="checkmark"
+                     fill="none"
+                     stroke-width="8"
+                     stroke-miterlimit="10"
+                     d="M81.7,17.8C73.5,9.3,62,4,49.2,4
+              C24.3,4,4,24.3,4,49.2s20.3,45.2,45.2,45.2s45.2-20.3,45.2-45.2c0-8.6-2.4-16.6-6.5-23.4l0,0L45.6,68.2L24.7,47.3"
+                  />
+               </svg>
+            </div>
+            <li>User IP is valid {% if ip_valid %}&#10004;{% endif %}</li>
+         </ul>
+         <ul>
+            <div class="wrapper">
+               <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 98.5 98.5" enable-background="new 0 0 98.5 98.5" xml:space="preserve">
+                  <path
+                     class="checkmark"
+                     fill="none"
+                     stroke-width="8"
+                     stroke-miterlimit="10"
+                     d="M81.7,17.8C73.5,9.3,62,4,49.2,4
+C24.3,4,4,24.3,4,49.2s20.3,45.2,45.2,45.2s45.2-20.3,45.2-45.2c0-8.6-2.4-16.6-6.5-23.4l0,0L45.6,68.2L24.7,47.3"
+                  />
+               </svg>
+            </div>
+            <li>User is valid {% if user_valid %}&#10004;{% endif %}</li>
+         </ul>
+         <ul>
+            <div class="wrapper">
+               <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 98.5 98.5" enable-background="new 0 0 98.5 98.5" xml:space="preserve">
+                  <path
+                     class="checkmark"
+                     fill="none"
+                     stroke-width="8"
+                     stroke-miterlimit="10"
+                     d="M81.7,17.8C73.5,9.3,62,4,49.2,4
+C24.3,4,4,24.3,4,49.2s20.3,45.2,45.2,45.2s45.2-20.3,45.2-45.2c0-8.6-2.4-16.6-6.5-23.4l0,0L45.6,68.2L24.7,47.3"
+                  />
+               </svg>
+            </div>
+            <li>Domain is valid {% if domain_valid %}&#10004;{% endif %}</li>
+         </ul>
          <div class="col-10">
             <span> <h3 class="payment__container-heading">Payment Successful</h3></span>
          </div>
@@ -14,5 +59,4 @@
       <h3 class="payment__container-cube">Your order is 1055</h3>
    </div>
 </div>
-
 {% endblock %}

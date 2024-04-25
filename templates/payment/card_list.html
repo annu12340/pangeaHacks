@@ -17,7 +17,8 @@
          </label>
          <div class="card-actions">
             <button type="button" onclick="viewDetails('{{ card.id }}')" class="btn btn-outline-info btn-sm">View Details</button>
-            <a> <button type="button" class="btn btn-success btn-sm">Make</button></a>
+
+            <a href="{% url 'payment' product_id %}"> <button type="button" class="btn btn-success btn-sm">Make payment</button></a>
          </div>
       </li>
       {% endfor %}
