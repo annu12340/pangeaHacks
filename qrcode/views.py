@@ -4,12 +4,14 @@ from django.shortcuts import render, redirect
 import segno
 
 from .models import Qrcode_info
+from utils.ip_address import get_public_ip 
+from utils.location_marker import mark_location
 from dotenv import load_dotenv
 from backend import settings
 
 import pangea.exceptions as pe
 from pangea.config import PangeaConfig
-from pangea.services import FileScan, FileIntel
+from pangea.services import FileScan, FileIntel, IpIntel
 from pangea.tools import logger_set_pangea_config
 
 load_dotenv()
@@ -114,7 +116,26 @@ def qrcode(request,product_id):
 
 def qrcode_detail(request, qrcode_id):
     qrcode_details = Qrcode_info.objects.get(id=qrcode_id)
-    scanid = request.GET.get('scanId', '')
-    print(scanid)
+   
+    try:
+        ip=get_public_ip()
+
+        intel = IpIntel(token, config=config)
+        response = intel.geolocate_bulk(ips=[ip])
+        print(f"Response: {response.result}")
+        latitude=response.result.data.get(ip).latitude
+        longitude=response.result.data.get(ip).longitude
+        mark_location(latitude,longitude)
+
+
+    except pe.PangeaAPIException as e:
+        print(f"Request Error: {e.response.summary}")
+        for err in e.errors:
+            print(f"\t{err.detail} \n")
+
+
     context = {'qrcode_details': qrcode_details, }
     return render(request, 'qrcode/qrcode_details.html', context)
+
+def view_map(request):
+    return render(request, 'map.html')

@@ -2,6 +2,7 @@ import os, requests
 import stripe
 from django.shortcuts import redirect, render
 from .models import Category, Product, CreditCard
+from utils.ip_address import get_public_ip 
 from pangea.config import PangeaConfig
 from pangea.services import Audit, UserIntel, Embargo, FileScan, DomainIntel
 from pangea.services.intel import HashType
@@ -93,18 +94,6 @@ def list_cards(request, product_id):
         user_cards = CreditCard.objects.filter(user_id=request.user.id)
         return render(request, 'payment/card_list.html', {'cards': user_cards,'product_id':product_id})    
 
-def get_public_ip():
-    try:
-        # Use a public IP address API service
-        response = requests.get('https://api64.ipify.org?format=json')
-        if response.status_code == 200:
-            data = response.json()
-            return data['ip']
-        else:
-            return "Failed to retrieve IP address."
-    except Exception as e:
-        return str(e)
-    
 
 
 def payment(request, product_id):
