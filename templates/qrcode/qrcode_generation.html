@@ -4,19 +4,19 @@
 <section class="ftco-section">
    <h1 class="h2 text-center">QR code generation</h1>
    <div class="container">
-      <div class="row justify-content-center">
-         <div class="col-xl-10">
+      <div class="row justify-content-center grid ml-80 mr-80">
+         <div class="gridlg:grid-cols-4 col-xl-10">
             <form action="#" class="billing-form" method="post" enctype="multipart/form-data">
                {% csrf_token %}
 
                <div class="row align-items-end">
-                  <div class="col-md-12">
+                  <div class="col-md-5">
                      <div class="form-group qrcode">
                         <label for="childname">Name of child</label>
                         <input name="childname" type="text" class="form-control" placeholder="" />
                      </div>
                   </div>
-                  <div class="col-md-12">
+                  <div class="col-md-5">
                      <div class="form-group qrcode">
                         <label for="parent">Name of Parent</label>
                         <input name="parent" type="text" class="form-control" placeholder="" />
@@ -42,9 +42,10 @@
                         <input name="streetaddress" type="text" class="form-control" placeholder="House number and street name" />
                      </div>
                   </div>
+                  <br />
                   <div class="col-md-6">
                      <div class="form-group qrcode">
-                        <input name="" type="text" class="form-control" placeholder="Appartment, suite, unit etc: (optional)" />
+                        <input name="" type="text" class="form-control" placeholder="Apartment, suite, unit etc: (optional)" />
                      </div>
                   </div>
                   <div class="w-100"></div>
@@ -103,9 +104,8 @@
                   </div>
                </div>
                <br />
-               <div class="text-center"><button class="btn btn-success py-3 px-4 text-center" type="submit">Generate QR Code</button></div>
+               <button class="btn btn-primary inline-block px-6 py-3 text-white rounded-lg shadow-md transition duration-300"><i class="fa-regular fa-square-check"></i> Checkout</button>
             </form>
-            <!-- END -->
          </div>
       </div>
    </div>

@@ -20,29 +20,11 @@
             <h2 class="h2 section-title">Bestsellers Products</h2>
 
             <ul class="filter-list">
+               {% for category_name in category %}
                <li>
-                  <button class="filter-btn active">All</button>
+                  <button class="filter-btn">{{ category_name.name }}</button>
                </li>
-
-               <li>
-                  <button class="filter-btn">Nike</button>
-               </li>
-
-               <li>
-                  <button class="filter-btn">Adidas</button>
-               </li>
-
-               <li>
-                  <button class="filter-btn">Puma</button>
-               </li>
-
-               <li>
-                  <button class="filter-btn">Bata</button>
-               </li>
-
-               <li>
-                  <button class="filter-btn">Apex</button>
-               </li>
+               {% endfor %}
             </ul>
 
             <ul class="product-list">

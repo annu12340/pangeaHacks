@@ -104,8 +104,8 @@ def qrcode(request,product_id):
         qrcode.save(
             f"{settings.MEDIA_ROOT}/qrcode/{qrcode_info.id}.png",
             scale=5,
-            dark="blue",
-            data_dark="darkblue",
+              dark="brown",
+            data_dark="orange",
         )
     
         return redirect('checkout', product_id=product_id)
