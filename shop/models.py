@@ -11,7 +11,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    photo = models.ImageField(upload_to='products')
+    photo = models.ImageField(upload_to="products")
     price = models.IntegerField()
     details = models.TextField()
     rating = models.CharField(max_length=10)
@@ -22,12 +22,13 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+
 class CreditCard(models.Model):
-    card_number = models.CharField(max_length=16)  
+    card_number = models.CharField(max_length=16)
     cardholder_name = models.CharField(max_length=100)
-    expiry_date = models.CharField(max_length=7)   
-    security_number = models.CharField(max_length=3) 
-    user_id=models.IntegerField()
+    expiry_date = models.CharField(max_length=7)
+    security_number = models.CharField(max_length=3)
+    user_id = models.IntegerField()
 
     def __str__(self):
         return f"Credit Card: {self.card_number}"

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 import segno
 
 from .models import Qrcode_info
-from utils.ip_address import get_public_ip 
+from utils.ip_address import get_public_ip
 from utils.location_marker import mark_location
 from dotenv import load_dotenv
 from backend import settings
@@ -21,12 +21,13 @@ domain = os.getenv("PANGEA_DOMAIN")
 config = PangeaConfig(domain=domain, queued_retry_enabled=False)
 client = FileScan(token, config=config, logger_name="pangea")
 
+
 def file_scan(file_name):
     print("Checking file...")
     # TODO: Fix this
     BASE_DIR = Path(__file__).resolve().parent
-    file_path = str(BASE_DIR / "media" / "reports" / file_name)  
-    print("file_path",file_path)
+    file_path = str(BASE_DIR / "media" / "reports" / file_name)
+    print("file_path", file_path)
     exception = None
     try:
         with open(file_path, "rb") as f:
@@ -63,22 +64,24 @@ def file_scan(file_name):
         for err in e.errors:
             print(f"\t{err.detail} \n")
 
+
 def file_intel(file_name):
     pass
 
-def qrcode(request,product_id):
+
+def qrcode(request, product_id):
     if request.POST:
         print("********************************")
-        parent = request.POST['parent']
-        childname = request.POST['childname']
+        parent = request.POST["parent"]
+        childname = request.POST["childname"]
 
-        relationship = request.POST['relationship']
-        streetaddress = request.POST['streetaddress']
-        phone = request.POST['phone']
-        towncity = request.POST['towncity']
-        postcode = request.POST['postcode']
-     
-        file=request.FILES.get('fileInput')
+        relationship = request.POST["relationship"]
+        streetaddress = request.POST["streetaddress"]
+        phone = request.POST["phone"]
+        towncity = request.POST["towncity"]
+        postcode = request.POST["postcode"]
+
+        file = request.FILES.get("fileInput")
         qrcode_info = Qrcode_info(
             parent=parent,
             childname=childname,
@@ -88,30 +91,27 @@ def qrcode(request,product_id):
             postcode=postcode,
             phone=phone,
             reports=file
-      
-         
             # created_by= request.user.id #TODO: Need to update
         )
-        
-    
+
         # Save the model instance
         qrcode_info.save()
         # file_scan(file)
-   
+
         # Generating the QR Code
-        qrcode_data = "http://127.0.0.1:8000/qrcode/"+str(qrcode_info.id)
+        qrcode_data = "http://127.0.0.1:8000/qrcode/" + str(qrcode_info.id)
         qrcode = segno.make_qr(qrcode_data)
         qrcode.save(
             f"{settings.MEDIA_ROOT}/qrcode/{qrcode_info.id}.png",
             scale=5,
-              dark="brown",
+            dark="brown",
             data_dark="orange",
         )
-    
-        return redirect('checkout', product_id=product_id)
 
- 
-    return render(request, 'qrcode/qrcode_generation.html')
+        return redirect("checkout", product_id=product_id)
+
+    return render(request, "qrcode/qrcode_generation.html")
+
 
 def redact_info(text):
     print(f"Redacting PII from: {text}")
@@ -126,11 +126,12 @@ def redact_info(text):
         for err in e.errors:
             print(f"\t{err.detail} \n")
 
+
 def qrcode_detail(request, qrcode_id):
     qrcode_details = Qrcode_info.objects.get(id=qrcode_id)
-   
+
     try:
-        ip=get_public_ip()
+        ip = get_public_ip()
 
         # intel = IpIntel(token, config=config)
         # response = intel.geolocate_bulk(ips=[ip])
@@ -139,13 +140,12 @@ def qrcode_detail(request, qrcode_id):
         # longitude=response.result.data.get(ip).longitude
         # mark_location(latitude,longitude)
 
-
     except pe.PangeaAPIException as e:
         print(f"Request Error: {e.response.summary}")
         for err in e.errors:
             print(f"\t{err.detail} \n")
 
-    description=f"""
+    description = f"""
     <p><strong>This is {qrcode_details.childname}, of {qrcode_details.parent}. The child has been reported missing.</strong></p>
     <p>If found, please contact {qrcode_details.phone}</p>
     <br>
@@ -156,11 +156,14 @@ def qrcode_detail(request, qrcode_id):
     {qrcode_details.towncity}<br>
     {qrcode_details.postcode}</p>
 """
-    if True!=True:
-        description=redact_info(description)
+    if True != True:
+        description = redact_info(description)
 
-    context = {'description': description, }
-    return render(request, 'qrcode/qrcode_details.html', context)
+    context = {
+        "description": description,
+    }
+    return render(request, "qrcode/qrcode_details.html", context)
+
 
 def view_map(request):
-    return render(request, 'map.html')
+    return render(request, "map.html")

@@ -1,6 +1,8 @@
 import folium
-def mark_location(latitude,longitude):
-        
+
+
+def mark_location(latitude, longitude):
+
     m = folium.Map([latitude, longitude], zoom_start=12)
 
     folium.Marker(
@@ -10,4 +12,4 @@ def mark_location(latitude,longitude):
         icon=folium.Icon(icon="cloud"),
     ).add_to(m)
 
-    m.save('templates/map.html')
+    m.save("templates/map.html")

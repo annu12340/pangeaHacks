@@ -12,7 +12,8 @@ load_dotenv()
 token = os.getenv("PANGEA_TOKEN")
 domain = os.getenv("PANGEA_DOMAIN")
 config = PangeaConfig(domain=domain, queued_retry_enabled=False)
-vault= Vault(os.getenv("PANGEA_TOKEN"), config=config)
+vault = Vault(os.getenv("PANGEA_TOKEN"), config=config)
+
 
 def encrypt_info(text):
     try:
@@ -20,7 +21,9 @@ def encrypt_info(text):
 
         # Create a symmetric key with the default parameters.
         create_response = vault.symmetric_generate(
-            purpose=KeyPurpose.ENCRYPTION, algorithm=SymmetricAlgorithm.AES128_CFB, name=name
+            purpose=KeyPurpose.ENCRYPTION,
+            algorithm=SymmetricAlgorithm.AES128_CFB,
+            name=name,
         )
         assert create_response.result
         key_id = create_response.result.id
@@ -35,9 +38,10 @@ def encrypt_info(text):
     except pe.PangeaAPIException as e:
         print(f"Vault Request Error: {e.response.summary}")
         for err in e.errors:
-            print(f"\t{err.detail} \n")  
+            print(f"\t{err.detail} \n")
 
-def decrypt_info(key_id,cipher_text):
+
+def decrypt_info(key_id, cipher_text):
     try:
         print("Decrypting...")
         decrypt_response = vault.decrypt(key_id, cipher_text)
@@ -48,4 +52,4 @@ def decrypt_info(key_id,cipher_text):
     except pe.PangeaAPIException as e:
         print(f"Vault Request Error: {e.response.summary}")
         for err in e.errors:
-            print(f"\t{err.detail} \n")    
+            print(f"\t{err.detail} \n")

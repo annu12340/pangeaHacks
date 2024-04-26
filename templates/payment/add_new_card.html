@@ -176,11 +176,11 @@
 </style>
 <section class="ftco-section">
    <h1 class="h2 text-center">New card</h1>
-  
+
    <div class="container-fluid">
       <form  method="post">
          {% csrf_token %}
-  
+
          <div class="container">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                <div class="col1 md:col-span-6">
@@ -208,7 +208,7 @@
                </div>
 
                <div class="md:col-span-5 md:pl-5">
-                 
+
                   <label>Card Number</label>
                   <input class="number"  id="card_num" name="card_num" type="text" ng-model="ncard" maxlength="19" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
                   <label>Cardholder name</label>
@@ -220,15 +220,15 @@
                   <br />
                   <a class="text-center" href="{{img_url}}" target="_blank">
                      <button class="btn btn-primary inline-block px-6 py-3 text-white rounded-lg shadow-md transition duration-300"><i class="fa-regular fa-square-caret-right"></i> Continue</button>
-         
+
                   </a>
-                
-                
+
+
                       </div>
             </form>
             </div>
          </div>
-    
+
    </div>
 </section>
 

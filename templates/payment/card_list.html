@@ -29,14 +29,14 @@
          </div>
       </div>
    </div>
-   
+
    <div class="payment">
       <div class="ml-20 mr-20 ">
       <div class="h3">Select credit card</div> <br>
          <div class=" grid lg:grid-cols-3 gap-6">
             {% for  card in cards %}
             <div class="card-details credit-cards">
-             
+
                <img src="https://t4.ftcdn.net/jpg/03/07/14/09/360_F_307140983_MDNd4Mtv5qgd3LAUK40ru1EPyYWL4elG.jpg"  alt="">
                <div class="card-number"><b>Card Number:</b> {{ card.card_number | truncatechars:30  }}</div>
                <div class="card-holder"><b>Cardholder Name:</b> {{ card.cardholder_name  }}</div>
@@ -44,15 +44,15 @@
                <div class="security"><b>Security Number: </b>{{ card.security_number |truncatechars:30  }}</div>
 <br>
 <button class="btn btn-success inline-block px-3 py-1 text-white rounded-lg shadow-md transition duration-300"><i class="fa-regular fa-eye"></i> View Details</button>
-           
+
                <button class="btn btn-primary  inline-block px-3 py-1 text-white rounded-lg shadow-md transition duration-300"><i class="fa-regular fa-money-bill-1"></i>  Make Payment</button>
-           
-              
+
+
             </div>
             {% endfor %}
          </div>
       </div>
-     
+
       </div>
    </div>
 
