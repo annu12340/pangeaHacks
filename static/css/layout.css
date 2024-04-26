@@ -82,7 +82,7 @@ body {
 }
 
 .container {
-   padding-inline: 15px;
+   padding-inline: 1px;
 }
 .section {
    padding-block: var(--section-padding);
