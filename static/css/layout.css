@@ -793,7 +793,6 @@ input {
 .payment-check:nth-child(3) {
    animation-delay: 35s; /* Delay third content by 1.5s */
 }
-
 /* LIST CARDS PAGE */
 
 img {
@@ -859,10 +858,6 @@ img {
 
 .shadow {
    box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
-}
-
-.row {
-   display: flex;
 }
 
 .txt {
