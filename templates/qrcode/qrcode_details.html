@@ -8,26 +8,7 @@
          </div>
          <div class="md:col-span-6 ml-10 qrcode-details">
             <h1 class="title text-center"><u>{{ qrcode_details.childname }}</u></h1>
-            <div class="details">
-               <div class="description">
-                  <p>This is {{ qrcode_details.childname }}, {{ qrcode_details.relation }} of {{ qrcode_details.parent }}. The child has been reported missing.</p>
-                  <p>
-                     If found, please contact <b><a href="tel:+{{ qrcode_details.phone }}">{{ qrcode_details.phone }}</a></b>
-                  </p>
-                  <h4>Alternate phone numbers:</h4>
-                  <ul>
-                     <li>+918334342232</li>
-                     <li>+9123324334</li>
-                  </ul>
-               </div>
-               <hr />
-               <div class="address">
-                  <h3>Address</h3>
-                  <p>{{ qrcode_details.streetaddress }}</p>
-                  <p>{{ qrcode_details.towncity }}</p>
-                  <p>{{ qrcode_details.postcode }}</p>
-               </div>
-            </div>
+            <div class="details">{{description | safe }}</div>
          </div>
       </div>
    </div>

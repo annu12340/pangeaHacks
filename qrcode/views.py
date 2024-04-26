@@ -11,7 +11,7 @@ from backend import settings
 
 import pangea.exceptions as pe
 from pangea.config import PangeaConfig
-from pangea.services import FileScan, FileIntel, IpIntel
+from pangea.services import FileScan, FileIntel, IpIntel, Redact
 from pangea.tools import logger_set_pangea_config
 
 load_dotenv()
@@ -113,6 +113,18 @@ def qrcode(request,product_id):
  
     return render(request, 'qrcode/qrcode_generation.html')
 
+def redact_info(text):
+    print(f"Redacting PII from: {text}")
+
+    try:
+        redact = Redact(token, config=config)
+        redact_response = redact.redact(text=text)
+        print(f"Redacted text: {redact_response.result.redacted_text}")
+        return redact_response.result.redacted_text
+    except pe.PangeaAPIException as e:
+        print(f"Redact Request Error: {e.response.summary}")
+        for err in e.errors:
+            print(f"\t{err.detail} \n")
 
 def qrcode_detail(request, qrcode_id):
     qrcode_details = Qrcode_info.objects.get(id=qrcode_id)
@@ -120,12 +132,12 @@ def qrcode_detail(request, qrcode_id):
     try:
         ip=get_public_ip()
 
-        intel = IpIntel(token, config=config)
-        response = intel.geolocate_bulk(ips=[ip])
-        print(f"Response: {response.result}")
-        latitude=response.result.data.get(ip).latitude
-        longitude=response.result.data.get(ip).longitude
-        mark_location(latitude,longitude)
+        # intel = IpIntel(token, config=config)
+        # response = intel.geolocate_bulk(ips=[ip])
+        # print(f"Response: {response.result}")
+        # latitude=response.result.data.get(ip).latitude
+        # longitude=response.result.data.get(ip).longitude
+        # mark_location(latitude,longitude)
 
 
     except pe.PangeaAPIException as e:
@@ -133,8 +145,21 @@ def qrcode_detail(request, qrcode_id):
         for err in e.errors:
             print(f"\t{err.detail} \n")
 
+    description=f"""
+    <p><strong>This is {qrcode_details.childname}, of {qrcode_details.parent}. The child has been reported missing.</strong></p>
+    <p>If found, please contact {qrcode_details.phone}</p>
+    <br>
+    <br>
+    <p><strong>Address</strong></p>
+    <hr>
+    <p>{qrcode_details.streetaddress}<br>
+    {qrcode_details.towncity}<br>
+    {qrcode_details.postcode}</p>
+"""
+    if True!=True:
+        description=redact_info(description)
 
-    context = {'qrcode_details': qrcode_details, }
+    context = {'description': description, }
     return render(request, 'qrcode/qrcode_details.html', context)
 
 def view_map(request):

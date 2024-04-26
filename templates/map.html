@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_c2dd544a3e182becb0e5046a7d5b6187 {
+                #map_0980a3f0da56f58140623d82d86530d5 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,18 +39,18 @@
 <body>
     
     
-            <div class="folium-map" id="map_c2dd544a3e182becb0e5046a7d5b6187" ></div>
+            <div class="folium-map" id="map_0980a3f0da56f58140623d82d86530d5" ></div>
         
 </body>
 <script>
     
     
-            var map_c2dd544a3e182becb0e5046a7d5b6187 = L.map(
-                "map_c2dd544a3e182becb0e5046a7d5b6187",
+            var map_0980a3f0da56f58140623d82d86530d5 = L.map(
+                "map_0980a3f0da56f58140623d82d86530d5",
                 {
                     center: [13.07, 77.59],
                     crs: L.CRS.EPSG3857,
-                    zoom: 9,
+                    zoom: 12,
                     zoomControl: true,
                     preferCanvas: false,
                 }
@@ -60,43 +60,43 @@
 
         
     
-            var tile_layer_b64250bfdd031478e3261e46997a23f0 = L.tileLayer(
+            var tile_layer_dc11706330f5dc90b1414153c73fcd4b = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
             );
         
     
-            tile_layer_b64250bfdd031478e3261e46997a23f0.addTo(map_c2dd544a3e182becb0e5046a7d5b6187);
+            tile_layer_dc11706330f5dc90b1414153c73fcd4b.addTo(map_0980a3f0da56f58140623d82d86530d5);
         
     
-            var marker_9815922ca6e5e1f4f00e903632c25a86 = L.marker(
+            var marker_577350dadcddd8bd69a981669de59ce8 = L.marker(
                 [13.07, 77.59],
                 {}
-            ).addTo(map_c2dd544a3e182becb0e5046a7d5b6187);
+            ).addTo(map_0980a3f0da56f58140623d82d86530d5);
         
     
-            var icon_386702e62ee3175dfd5569c0da885940 = L.AwesomeMarkers.icon(
+            var icon_29ae7323a072d24ca93c5a7a79ec8f5b = L.AwesomeMarkers.icon(
                 {"extraClasses": "fa-rotate-0", "icon": "cloud", "iconColor": "white", "markerColor": "blue", "prefix": "glyphicon"}
             );
-            marker_9815922ca6e5e1f4f00e903632c25a86.setIcon(icon_386702e62ee3175dfd5569c0da885940);
+            marker_577350dadcddd8bd69a981669de59ce8.setIcon(icon_29ae7323a072d24ca93c5a7a79ec8f5b);
         
     
-        var popup_29fedaa685c2e1498c7c1864c8f91d1f = L.popup({"maxWidth": "100%"});
+        var popup_4f984c12c5b98e43f1eabef7e56951fb = L.popup({"maxWidth": "100%"});
 
         
             
-                var html_3a3ebf42369808fb3505d70e18b84909 = $(`<div id="html_3a3ebf42369808fb3505d70e18b84909" style="width: 100.0%; height: 100.0%;">Location  latitude: 77.59  longitude:77.59 </div>`)[0];
-                popup_29fedaa685c2e1498c7c1864c8f91d1f.setContent(html_3a3ebf42369808fb3505d70e18b84909);
+                var html_9eed2a1ca07885279d187c3bacec87fb = $(`<div id="html_9eed2a1ca07885279d187c3bacec87fb" style="width: 100.0%; height: 100.0%;">Location - Latitude: 77.59  - Longitude:77.59 </div>`)[0];
+                popup_4f984c12c5b98e43f1eabef7e56951fb.setContent(html_9eed2a1ca07885279d187c3bacec87fb);
             
         
 
-        marker_9815922ca6e5e1f4f00e903632c25a86.bindPopup(popup_29fedaa685c2e1498c7c1864c8f91d1f)
+        marker_577350dadcddd8bd69a981669de59ce8.bindPopup(popup_4f984c12c5b98e43f1eabef7e56951fb)
         ;
 
         
     
     
-            marker_9815922ca6e5e1f4f00e903632c25a86.bindTooltip(
+            marker_577350dadcddd8bd69a981669de59ce8.bindTooltip(
                 `<div>
                      Your child was most recently found here
                  </div>`,
