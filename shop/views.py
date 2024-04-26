@@ -66,8 +66,11 @@ def new_card(request, product_id):
         security_number = request.POST.get('card_cvv', '')
 
         # Encrpting and ciphering sensitive card info
-        card_number=encrypt_info(card_number)
-        security_number=encrypt_info(card_number)
+        #TODO: Rwmove comment
+        # card_number=encrypt_info(card_number)
+        # security_number=encrypt_info(card_number)
+        card_number=card_number
+        security_number=security_number
         card_info = CreditCard(
             card_number=card_number,
             cardholder_name=cardholder_name,

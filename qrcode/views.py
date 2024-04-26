@@ -75,10 +75,8 @@ def qrcode(request,product_id):
         phone = request.POST['phone']
         towncity = request.POST['towncity']
         postcode = request.POST['postcode']
-        redact_data = request.POST['redact_data']
-        notify = request.POST['notify']
+     
         file=request.FILES.get('fileInput')
-    
         qrcode_info = Qrcode_info(
             parent=parent,
             childname=childname,
@@ -87,10 +85,10 @@ def qrcode(request,product_id):
             towncity=towncity,
             postcode=postcode,
             phone=phone,
-            reports=file,
-            redact_data=redact_data,
-            notify=notify,
-            created_by= request.user.id #TODO: Need to update
+            reports=file
+      
+         
+            # created_by= request.user.id #TODO: Need to update
         )
         
     
