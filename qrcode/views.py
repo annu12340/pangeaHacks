@@ -83,8 +83,7 @@ def qrcode(request, product_id):
         postcode = request.POST["postcode"]
         redact_data = request.POST["redact_data"]
         notify = request.POST["notify"]
-        
-        
+
         file = request.FILES.get("fileInput")
         qrcode_info = Qrcode_info(
             parent=parent,
@@ -97,7 +96,7 @@ def qrcode(request, product_id):
             reports=file,
             redact_data=redact_data,
             notify=notify,
-            created_by= request.user.id 
+            created_by=request.user.id,
         )
 
         # Save the model instance

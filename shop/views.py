@@ -59,12 +59,12 @@ def new_card(request, product_id):
         cardholder_name = request.POST.get("card_holder", "")
         expiry_date = request.POST.get("card_expiry_date", "")
         security_number = request.POST.get("card_cvv", "")
-        encryption_key=request.POST.get("encryption_key")
+        encryption_key = request.POST.get("encryption_key")
         # if encryption_key:
-            # Encrpting and ciphering sensitive card info
-            # TODO: Rwmove comment
-            # card_number=encrypt_info(card_number, encryption_key)
-            # security_number=encrypt_info(card_number, encryption_key)
+        # Encrpting and ciphering sensitive card info
+        # TODO: Rwmove comment
+        # card_number=encrypt_info(card_number, encryption_key)
+        # security_number=encrypt_info(card_number, encryption_key)
         card_number = card_number
         security_number = security_number
         card_info = CreditCard(
@@ -73,27 +73,31 @@ def new_card(request, product_id):
             expiry_date=expiry_date,
             security_number=security_number,
             user_id=request.user.id,
-            encryption_key=encryption_key
+            encryption_key=encryption_key,
         )
 
         card_info.save()
         print("redircting to list_cards")
-        redirect("list_cards", product_id=product_id)
+        return redirect("list_cards", product_id=product_id)
     else:
         return render(request, "payment/add_new_card.html", {"product_id": product_id})
 
 
 def list_cards(request, product_id):
     print("reached here")
-    products = Product.objects.filter(id=product_id)
-    print("productsproductsproducts", products)
+    product = Product.objects.filter(id=product_id)[0]
+    print("productsproductsproducts", product.name)
 
     user_cards = CreditCard.objects.filter(user_id=request.user.id)
     return render(
         request,
         "payment/card_list.html",
-        {"cards": user_cards, "product_id": product_id},
+        {"cards": user_cards, "product": product},
     )
+
+
+def check_password(request, redirect_type):
+    return render(request, "payment/password.html")
 
 
 def payment(request, product_id):

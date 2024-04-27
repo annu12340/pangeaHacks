@@ -6,15 +6,15 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('qrcode', '0002_a'),
+        ("qrcode", "0002_a"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='A',
+            name="A",
         ),
         migrations.RemoveField(
-            model_name='qrcode_info',
-            name='encryption_key',
+            model_name="qrcode_info",
+            name="encryption_key",
         ),
     ]

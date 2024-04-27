@@ -17,7 +17,7 @@ vault = Vault(os.getenv("PANGEA_TOKEN"), config=config)
 
 def encrypt_info(text, key):
     try:
-        name =key
+        name = key
 
         # Create a symmetric key with the default parameters.
         create_response = vault.symmetric_generate(

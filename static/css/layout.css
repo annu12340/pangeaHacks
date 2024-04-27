@@ -1,5 +1,6 @@
 :root {
    --maximum-blue-green_10: hsla(185, 75%, 45%, 0.1);
+   --borderColor: #78b13f;
    --rich-black-fogra-29: hsl(217, 28%, 9%);
    --gray-x-11-gray: hsl(0, 0%, 74%);
    --oxford-blue_60: hsla(230, 41%, 14%, 0.6);
@@ -791,15 +792,15 @@ img {
 }
 
 .details {
-   max-width: 800px;
+   max-width: 1000px;
    margin-left: auto;
    margin-right: auto;
-   background: #e3e0e0;
+   background: #ffffff;
    border-radius: 8px;
    display: flex;
    flex-direction: column;
    position: relative;
-   box-shadow: 4px 4px 10px #000000;
+   box-shadow: 1px 1px 5px #c9c6c6;
 }
 
 .details__item {
@@ -825,9 +826,8 @@ img {
 }
 
 .item__image .iphone {
-   margin-top: -50px;
-   margin-left: -100px;
    width: 200px;
+   /* height: 100px; */
 }
 
 .item__details {
@@ -857,10 +857,12 @@ img {
 }
 
 .credit-cards {
-   box-shadow: 1px 1px 5px #c9c6c6;
    padding: 3%;
    border-radius: 5%;
    margin-left: 10%;
+   background: #5d4157;
+
+   box-shadow: 2px 2px rgba(0, 0, 0, 0.4);
 }
 
 .credit_card_action {
@@ -869,4 +871,142 @@ img {
 
 .credit-cards img {
    width: 20%;
+}
+
+.details-item {
+   display: flex;
+   padding: 3%;
+}
+
+.item-image {
+   margin-right: 20px;
+}
+
+.product-image {
+   max-width: 100%;
+}
+
+.product-name {
+   margin-bottom: 5px;
+   font-size: 2.5rem;
+}
+
+.product-description {
+   color: #666;
+   font-size: 1.5rem;
+   margin-bottom: 10px;
+}
+
+.stock-status {
+   font-weight: bold;
+   color: red;
+   margin-bottom: 10px;
+}
+
+.price-section {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   margin-bottom: 10px;
+}
+
+.product-price {
+   font-size: 2rem;
+   font-weight: bold;
+   color: #333;
+}
+
+.quantity-section {
+   display: flex;
+   align-items: center;
+}
+
+.uppercase {
+   text-transform: uppercase;
+}
+
+.text-gray {
+   color: #777;
+}
+
+.ml-3 {
+   margin-left: 0.75rem;
+}
+
+.bg-purple {
+   background-color: #7c3aed;
+}
+
+.border {
+   border-width: 1px;
+}
+
+.border-white {
+   border-color: #fff;
+}
+
+.p-2 {
+   padding: 0.5rem;
+}
+
+.rounded-tight {
+   border-radius: 0.25rem;
+}
+
+.credit-card-wrap .credit-card-inner {
+   z-index: 100;
+   padding: 30px;
+   width: inherit;
+   height: inherit;
+   position: relative;
+   background-color: rgb(228, 228, 255);
+}
+
+.credit-card-wrap .credit-font {
+   color: #fff;
+   font-size: 18px;
+   font-family: ocr_a_std, sans-serif;
+   text-shadow: -1px -1px 0px rgba(255, 255, 255, 0.3), 1px 1px 0px rgba(99, 98, 98, 0.8);
+}
+.credit-card-wrap .credit-card-number {
+   font-size: 26px;
+   text-align: center;
+
+   white-space: nowrap;
+}
+.credit-card-wrap .credit-card-number:before {
+   top: 100%;
+   font-size: 12px;
+   font-family: Roboto;
+   content: attr(data-text);
+}
+.credit-card-wrap .credit-card-date {
+   color: #fff;
+   text-align: center;
+   margin-left: 5%;
+}
+.credit-card-wrap .credit-card-date .title {
+   color: #f3a239;
+   font-size: 12px;
+   text-align: right;
+   display: inline-block;
+   text-transform: uppercase;
+}
+
+.credit-card-wrap .mk-icon-sim {
+   width: 55px;
+   height: 40px;
+   margin: 20px 0;
+   border-radius: 8px;
+   background-color: #fdd76f;
+}
+
+.credit-card-wrap .footer {
+   left: 30px;
+   right: 30px;
+   bottom: 30px;
+   position: absolute;
+}
+.credit-card-wrap .footer .pull-left {
+   width: 70%;
 }
