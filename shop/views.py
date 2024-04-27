@@ -4,10 +4,11 @@ from django.shortcuts import redirect, render
 from .models import Category, Product, CreditCard
 from utils.ip_address import get_public_ip
 from pangea.config import PangeaConfig
-from pangea.services import Audit, UserIntel, Embargo, FileScan, DomainIntel
+from pangea.services import Audit, UserIntel, Embargo, FileScan, DomainIntel, IpIntel
 from pangea.services.intel import HashType
 from pangea.tools import logger_set_pangea_config
 from pangea.utils import get_prefix, hash_sha256
+from pangea.services.intel import IPDomainData, IPGeolocateData, IPProxyData, IPVPNData
 
 import pangea.exceptions as pe
 from dotenv import load_dotenv
@@ -17,6 +18,8 @@ from utils.encrypt_decrypt import encrypt_info, decrypt_info
 load_dotenv()
 config = PangeaConfig(domain=os.getenv("PANGEA_DOMAIN"))
 audit = Audit(os.getenv("PANGEA_TOKEN"), config=config)
+token = os.getenv("PANGEA_TOKEN")
+
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
@@ -95,20 +98,10 @@ def list_cards(request, product_id):
         {"cards": user_cards, "product": product},
     )
 
-
-def check_password(request, redirect_type):
-    return render(request, "payment/password.html")
-
-
-def payment(request, product_id):
-    ip_addr = get_public_ip()
+def check_emerago(ip_addr):
+    
     sanction_msg = ""
-    token = os.getenv("PANGEA_TOKEN")
-    domain = os.getenv("PANGEA_DOMAIN")
-    config = PangeaConfig(domain=domain)
-    # embargo = Embargo(token, config=config, logger_name="embargo")
-    # logger_set_pangea_config(logger_name=embargo.logger.name)
-
+   
     try:
         # embargo_response = embargo.ip_check(ip=ip_addr)
         # print(f"Response: {embargo_response.result}")
@@ -118,9 +111,45 @@ def payment(request, product_id):
         if sanctions_count >= 1:
             print("sanction_msg", sanction_msg)
             # sanction_msg=embargo_response.result.summary
+        return sanctions_count
     except pe.PangeaAPIException as err:
         print(f"Embargo Request Error: {err.response.summary}")
         for er in err.errors:
             print(f"\t{er.detail} \n")
+
+
+
+def ip_intel(ip_addr):
+    try:
+
+        intel = IpIntel(token, config=config)
+        response = intel.get_domain(ip=ip_addr, provider="digitalelement", verbose=True, raw=True)
+     
+        if response.result.data.domain_found:
+            print("IP domain was found")
+            return True
+        else:
+            print("IP domain was not found")
+            return False
+   
+    except pe.PangeaAPIException as e:
+        print(e)
+
+def check_password(request, redirect_type):
+    if request.POST:
+        print("possting 1232", request.POST)
+        encryption_key = request.POST["encryption_key"]
+
+        ip_addr = get_public_ip()
+        emerago=check_emerago(ip_addr)
+        print("calling IP")
+        ipintel=ip_intel(ip_addr)
+        print("ipintelipintelipintel",ipintel)
+
+    return render(request, "payment/password.html")
+
+
+def succesfull(request, product_id):
+
 
     return render(request, "succesfull.html")
