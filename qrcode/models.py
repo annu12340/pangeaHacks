@@ -11,9 +11,10 @@ class Qrcode_info(models.Model):
     phone = models.CharField(max_length=30)
     date = models.DateTimeField(auto_now_add=True)
     reports = models.FileField(blank=True, upload_to="reports")
-    # redact_data=models.CharField(max_length=30)
-    # notify=models.CharField(max_length=30)
-    # created_by=models.IntegerField()
+    redact_data=models.CharField(max_length=30)
+    notify=models.CharField(max_length=30)
+    encryption_key=models.CharField(max_length=30,default='')
+    created_by=models.IntegerField()
 
     def __str__(self):
         return self.parent
