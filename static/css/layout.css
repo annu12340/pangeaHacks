@@ -118,6 +118,10 @@ body {
    padding: 14px 25px;
    border: 1px solid var(--border-color, var(--bittersweet));
 }
+.ftco-section {
+   margin-left: 10%;
+   margin-right: 10%;
+}
 .btn-primary:is(:hover, :focus) {
    --background: var(--salmon);
    --border-color: var(--salmon);

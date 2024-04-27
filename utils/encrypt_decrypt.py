@@ -15,9 +15,9 @@ config = PangeaConfig(domain=domain, queued_retry_enabled=False)
 vault = Vault(os.getenv("PANGEA_TOKEN"), config=config)
 
 
-def encrypt_info(text):
+def encrypt_info(text, key):
     try:
-        name = f"Python encrypt example {token_hex(8)}"
+        name =key
 
         # Create a symmetric key with the default parameters.
         create_response = vault.symmetric_generate(

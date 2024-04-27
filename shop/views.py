@@ -21,9 +21,9 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
 def shop_page(request):
-    print("sdfdsfdsfsd", request.user.is_authenticated)
+    print("request.user.is_authenticated", request.user.is_authenticated)
     category = Category.objects.all()
-    products = Product.objects.filter()
+    products = Product.objects.all()
     context = {"category": category, "products": products}
     # audit.log(f"User has visited shop page")
     return render(request, "shop/dashboard.html", context)
@@ -31,9 +31,7 @@ def shop_page(request):
 
 def product_details(request, product_id):
     product_details = Product.objects.get(id=product_id)
-    ctg = Category.objects.get(name=product_details.category)
-    # related_products = Product.objects.filter(category="ds")
-    related_products = Product.objects.all()  # TODO
+    related_products = Product.objects.get(category=product_details.category)
     context = {"product": product_details, "related_products": related_products}
 
     return render(request, "shop/product-details.html", context)
@@ -61,11 +59,12 @@ def new_card(request, product_id):
         cardholder_name = request.POST.get("card_holder", "")
         expiry_date = request.POST.get("card_expiry_date", "")
         security_number = request.POST.get("card_cvv", "")
-
-        # Encrpting and ciphering sensitive card info
-        # TODO: Rwmove comment
-        # card_number=encrypt_info(card_number)
-        # security_number=encrypt_info(card_number)
+        encryption_key=request.POST.get("encryption_key")
+        # if encryption_key:
+            # Encrpting and ciphering sensitive card info
+            # TODO: Rwmove comment
+            # card_number=encrypt_info(card_number, encryption_key)
+            # security_number=encrypt_info(card_number, encryption_key)
         card_number = card_number
         security_number = security_number
         card_info = CreditCard(
@@ -74,6 +73,7 @@ def new_card(request, product_id):
             expiry_date=expiry_date,
             security_number=security_number,
             user_id=request.user.id,
+            encryption_key=encryption_key
         )
 
         card_info.save()

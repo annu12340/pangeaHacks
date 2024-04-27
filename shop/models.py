@@ -29,6 +29,7 @@ class CreditCard(models.Model):
     expiry_date = models.CharField(max_length=7)
     security_number = models.CharField(max_length=3)
     user_id = models.IntegerField()
+    encryption_key=models.CharField(max_length=30,default='')
 
     def __str__(self):
         return f"Credit Card: {self.card_number}"

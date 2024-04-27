@@ -176,7 +176,7 @@
 </style>
 <section class="ftco-section">
    <h1 class="h2 text-center">New card</h1>
-
+<br>
    <div class="container-fluid">
       <form  method="post">
          {% csrf_token %}
@@ -218,10 +218,33 @@
                   <label>Security Number</label>
                   <input class="ccv"  id="card_cvv" name="card_cvv"  type="text" placeholder="CVC" maxlength="3" onkeypress="return event.charCode >= 48 && event.charCode <= 57" />
                   <br />
-                  <a class="text-center" href="{{img_url}}" target="_blank">
-                     <button class="btn btn-primary inline-block px-6 py-3 text-white rounded-lg shadow-md transition duration-300"><i class="fa-regular fa-square-caret-right"></i> Continue</button>
+                  <p>Do you want to encrypt this data?</p>
+                  <div class="row">
+                     <div class="col-md-6">
+                        <label class="inline-flex items-center">
+                           <input type="radio" id="yes_encrypt" name="encrypt_data" value="yes" class="form-radio text-indigo-600 h-5 w-5" />
+                           <span class="ml-2">Yes</span>
+                        </label>
+                     </div>
+                     <div class="col-md-6">
+                        <label class="inline-flex items-center">
+                           <input type="radio" id="no_encrypt" name="encrypt_data" value="no" class="form-radio text-indigo-600 h-5 w-5" />
+                           <span class="ml-2">No</span>
+                        </label>
+                     </div>
+                  </div>
+                  <div class="row" id="encryptDataInput" style="display: none">
+                     <div class="col-md-6">
+                        <br />
+                        <div class="form-group qrcode">
+                           <label for="encryption_key">Encryption Key</label>
+                           <input name="encryption_key" type="text" class="form-control" placeholder="Enter encryption key" />
+                        </div>
+                     </div>
+                  </div>
+                  <br>
+                  <button class="btn btn-primary inline-block px-6 py-3 text-white rounded-lg shadow-md transition duration-300"><i class="fa-regular fa-square-caret-right"></i> Continue</button>
 
-                  </a>
 
 
                       </div>
@@ -385,4 +408,29 @@
          });
    });
 </script>
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+      // Select the encrypt data radio buttons
+      const yesEncrypt = document.getElementById("yes_encrypt");
+      const noEncrypt = document.getElementById("no_encrypt");
+      const encryptDataInput = document.getElementById("encryptDataInput");
+
+      // Function to show or hide the encrypt data input field
+      function toggleEncryptDataInput() {
+         if (yesEncrypt.checked) {
+            encryptDataInput.style.display = "block";
+         } else {
+            encryptDataInput.style.display = "none";
+         }
+      }
+
+      // Add event listeners to the radio buttons
+      yesEncrypt.addEventListener("change", toggleEncryptDataInput);
+      noEncrypt.addEventListener("change", toggleEncryptDataInput);
+
+      // Initially call the function to set the correct display state
+      toggleEncryptDataInput();
+   });
+</script>
+
 {% endblock %}

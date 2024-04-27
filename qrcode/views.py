@@ -34,7 +34,7 @@ def file_scan(file_name):
             response = client.file_scan(file=f, verbose=True)
 
         print("Scan success on first attempt...")
-        print(f"Response: {response.result}")
+        print(f"Response: {response.summary}")
         exit()
     except pe.AcceptedRequestException as e:
         # Save the exception value to request the results later.
@@ -80,7 +80,11 @@ def qrcode(request, product_id):
         phone = request.POST["phone"]
         towncity = request.POST["towncity"]
         postcode = request.POST["postcode"]
-
+        postcode = request.POST["postcode"]
+        redact_data = request.POST["redact_data"]
+        notify = request.POST["notify"]
+        
+        
         file = request.FILES.get("fileInput")
         qrcode_info = Qrcode_info(
             parent=parent,
@@ -90,12 +94,15 @@ def qrcode(request, product_id):
             towncity=towncity,
             postcode=postcode,
             phone=phone,
-            reports=file
-            # created_by= request.user.id #TODO: Need to update
+            reports=file,
+            redact_data=redact_data,
+            notify=notify,
+            created_by= request.user.id 
         )
 
         # Save the model instance
         qrcode_info.save()
+
         # file_scan(file)
 
         # Generating the QR Code
