@@ -6,6 +6,7 @@ import segno
 from .models import Qrcode_info
 from utils.ip_address import get_public_ip
 from utils.location_marker import mark_location
+from utils.twilio import send_twilio_msg
 from dotenv import load_dotenv
 from backend import settings
 
@@ -135,7 +136,7 @@ def redact_info(text):
 
 def qrcode_detail(request, qrcode_id):
     qrcode_details = Qrcode_info.objects.get(id=qrcode_id)
-
+    
     try:
         ip = get_public_ip()
 
@@ -145,6 +146,14 @@ def qrcode_detail(request, qrcode_id):
         # latitude=response.result.data.get(ip).latitude
         # longitude=response.result.data.get(ip).longitude
         # mark_location(latitude,longitude)
+        longitude=2323
+        latitude=1212
+        region='bangalore'
+        message=f"""
+            Your child was found at this location. 
+            \nLatitude: {latitude}, Longitude: {longitude}, Region: {region}
+        """
+        # send_twilio_msg(qrcode_details.phone, message)
 
     except pe.PangeaAPIException as e:
         print(f"Request Error: {e.response.summary}")
