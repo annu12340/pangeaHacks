@@ -34,7 +34,7 @@ def shop_page(request):
 
 def product_details(request, product_id):
     product_details = Product.objects.get(id=product_id)
-    related_products = Product.objects.get(category=product_details.category)
+    related_products = Product.objects.filter(category=product_details.category)
     context = {"product": product_details, "related_products": related_products}
 
     return render(request, "shop/product-details.html", context)

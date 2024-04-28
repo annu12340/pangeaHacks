@@ -12,7 +12,7 @@ from backend import settings
 
 import pangea.exceptions as pe
 from pangea.config import PangeaConfig
-from pangea.services import FileScan, FileIntel, IpIntel, Redact
+from pangea.services import FileScan, FileIntel, IpIntel, Redact, UrlIntel
 from pangea.tools import logger_set_pangea_config
 
 load_dotenv()
@@ -21,6 +21,7 @@ domain = os.getenv("PANGEA_DOMAIN")
 
 config = PangeaConfig(domain=domain, queued_retry_enabled=False)
 client = FileScan(token, config=config, logger_name="pangea")
+intel = UrlIntel(token, config=config)
 
 
 def file_scan(file_name):
@@ -69,6 +70,16 @@ def file_scan(file_name):
 def file_intel(file_name):
     pass
 
+def url_intel(url):
+    try:
+        url_list = [url]
+        response = intel.reputation_bulk(urls=url_list, provider="crowdstrike", verbose=True, raw=True)
+        print("Result:", response)
+        score=response.result.data[url_list[0]].score
+        if score==0:return True
+        elif score==100: return False
+    except pe.PangeaAPIException as e:
+        print(e)
 
 def qrcode(request, product_id):
     if request.POST:
@@ -84,6 +95,7 @@ def qrcode(request, product_id):
         postcode = request.POST["postcode"]
         redact_data = request.POST["redact_data"]
         notify = request.POST["notify"]
+        url=request.POST["url"]
 
         file = request.FILES.get("fileInput")
         qrcode_info = Qrcode_info(
@@ -94,11 +106,15 @@ def qrcode(request, product_id):
             towncity=towncity,
             postcode=postcode,
             phone=phone,
-            reports=file,
+            photo=file,
+            details_url=url,
             redact_data=redact_data,
             notify=notify,
             created_by=request.user.id,
         )
+
+        if url_intel(url)==False:
+            return  render(request, "malicious_data.html")
 
         # Save the model instance
         qrcode_info.save()

@@ -1,0 +1,26 @@
+{% extends 'layout.html' %} {% load static %} {% block content %}
+<style>
+   .error-container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f8d7da; /* Reducing the intensity of red */
+      border: 1px solid #f5c6cb; /* Using a lighter shade for the border */
+      border-radius: 5px;
+   }
+
+   .error-heading {
+      color: #721c24; /* Darkening the red for better visibility */
+   }
+
+   .error-message {
+      color: #721c24; /* Darkening the red for better visibility */
+      font-size: 16px;
+      line-height: 1.5;
+   }
+</style>
+<div class="error-container">
+   <h2 class="error-heading h2">The operation failed</h2>
+   <p class="error-message">The data you provided looks malicious. It cannot be added to the database.</p>
+</div>
+{% endblock %}
