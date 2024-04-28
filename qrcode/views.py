@@ -8,6 +8,7 @@ from utils.ip_address import get_public_ip
 from utils.location_marker import mark_location
 from utils.twilio import send_twilio_msg
 from utils.pplx import convert_to_regional_language
+from utils.calculate_sha256 import calculate_sha256
 from dotenv import load_dotenv
 from backend import settings
 
@@ -69,7 +70,20 @@ def file_scan(file_name):
 
 
 def file_intel(file_name):
-    pass
+    try:
+        indicator = calculate_sha256(file_name)
+        response = intel.hash_reputation(
+            hash=indicator,
+            hash_type="sha256",
+            provider="reversinglabs",
+            verbose=True,
+            raw=True,
+        )
+        print("Result:")
+        print( response.result.data)
+        return  response.result.data.score
+    except pe.PangeaAPIException as e:
+        print(e)
 
 
 def url_intel(url):
@@ -119,8 +133,17 @@ def qrcode(request, product_id):
             notify=notify,
             created_by=request.user.id,
         )
+        
 
+        # ----Verification -----
+        data_valid=True
         if url_intel(url) == False:
+            data_valid=False
+        if file_intel(file)!=0:
+            if file_scan(file)==100:
+                data_valid=False
+        
+        if data_valid==False:
             return render(request, "malicious_data.html")
 
         # Save the model instance
@@ -176,7 +199,7 @@ def qrcode_detail(request, qrcode_id):
             Your child was found at this location.
             \nLatitude: {latitude}, Longitude: {longitude}, Region: {region}
         """
-        convert_to_regional_language(region, message)
+        # convert_to_regional_language(region, message)
         # send_twilio_msg(qrcode_details.phone, message)
 
     except pe.PangeaAPIException as e:
