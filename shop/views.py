@@ -98,10 +98,11 @@ def list_cards(request, product_id):
         {"cards": user_cards, "product": product},
     )
 
+
 def check_emerago(ip_addr):
-    
+
     sanction_msg = ""
-   
+
     try:
         # embargo_response = embargo.ip_check(ip=ip_addr)
         # print(f"Response: {embargo_response.result}")
@@ -118,22 +119,24 @@ def check_emerago(ip_addr):
             print(f"\t{er.detail} \n")
 
 
-
 def ip_intel(ip_addr):
     try:
 
         intel = IpIntel(token, config=config)
-        response = intel.get_domain(ip=ip_addr, provider="digitalelement", verbose=True, raw=True)
-     
+        response = intel.get_domain(
+            ip=ip_addr, provider="digitalelement", verbose=True, raw=True
+        )
+
         if response.result.data.domain_found:
             print("IP domain was found")
             return True
         else:
             print("IP domain was not found")
             return False
-   
+
     except pe.PangeaAPIException as e:
         print(e)
+
 
 def check_password(request, redirect_type):
     if request.POST:
@@ -141,15 +144,14 @@ def check_password(request, redirect_type):
         encryption_key = request.POST["encryption_key"]
 
         ip_addr = get_public_ip()
-        emerago=check_emerago(ip_addr)
+        emerago = check_emerago(ip_addr)
         print("calling IP")
-        ipintel=ip_intel(ip_addr)
-        print("ipintelipintelipintel",ipintel)
+        ipintel = ip_intel(ip_addr)
+        print("ipintelipintelipintel", ipintel)
 
     return render(request, "payment/password.html")
 
 
 def succesfull(request, product_id):
-
 
     return render(request, "succesfull.html")

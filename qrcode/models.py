@@ -11,7 +11,7 @@ class Qrcode_info(models.Model):
     phone = models.CharField(max_length=30)
     date = models.DateTimeField(auto_now_add=True)
     photo = models.FileField(blank=True, upload_to="photo")
-    details_url=models.CharField(max_length=100)
+    details_url = models.CharField(max_length=100)
     redact_data = models.CharField(max_length=30)
     notify = models.CharField(max_length=30)
     created_by = models.IntegerField()

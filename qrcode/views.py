@@ -7,6 +7,7 @@ from .models import Qrcode_info
 from utils.ip_address import get_public_ip
 from utils.location_marker import mark_location
 from utils.twilio import send_twilio_msg
+from utils.pplx import convert_to_regional_language
 from dotenv import load_dotenv
 from backend import settings
 
@@ -70,16 +71,22 @@ def file_scan(file_name):
 def file_intel(file_name):
     pass
 
+
 def url_intel(url):
     try:
         url_list = [url]
-        response = intel.reputation_bulk(urls=url_list, provider="crowdstrike", verbose=True, raw=True)
+        response = intel.reputation_bulk(
+            urls=url_list, provider="crowdstrike", verbose=True, raw=True
+        )
         print("Result:", response)
-        score=response.result.data[url_list[0]].score
-        if score==0:return True
-        elif score==100: return False
+        score = response.result.data[url_list[0]].score
+        if score == 0:
+            return True
+        elif score == 100:
+            return False
     except pe.PangeaAPIException as e:
         print(e)
+
 
 def qrcode(request, product_id):
     if request.POST:
@@ -95,7 +102,7 @@ def qrcode(request, product_id):
         postcode = request.POST["postcode"]
         redact_data = request.POST["redact_data"]
         notify = request.POST["notify"]
-        url=request.POST["url"]
+        url = request.POST["url"]
 
         file = request.FILES.get("fileInput")
         qrcode_info = Qrcode_info(
@@ -113,8 +120,8 @@ def qrcode(request, product_id):
             created_by=request.user.id,
         )
 
-        if url_intel(url)==False:
-            return  render(request, "malicious_data.html")
+        if url_intel(url) == False:
+            return render(request, "malicious_data.html")
 
         # Save the model instance
         qrcode_info.save()
@@ -152,7 +159,7 @@ def redact_info(text):
 
 def qrcode_detail(request, qrcode_id):
     qrcode_details = Qrcode_info.objects.get(id=qrcode_id)
-    
+
     try:
         ip = get_public_ip()
 
@@ -162,13 +169,14 @@ def qrcode_detail(request, qrcode_id):
         # latitude=response.result.data.get(ip).latitude
         # longitude=response.result.data.get(ip).longitude
         # mark_location(latitude,longitude)
-        longitude=2323
-        latitude=1212
-        region='bangalore'
-        message=f"""
-            Your child was found at this location. 
+        longitude = 2323
+        latitude = 1212
+        region = "bangalore"
+        message = f"""
+            Your child was found at this location.
             \nLatitude: {latitude}, Longitude: {longitude}, Region: {region}
         """
+        convert_to_regional_language(region, message)
         # send_twilio_msg(qrcode_details.phone, message)
 
     except pe.PangeaAPIException as e:

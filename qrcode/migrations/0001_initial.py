@@ -7,27 +7,34 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Qrcode_info',
+            name="Qrcode_info",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('parent', models.CharField(default='', max_length=40)),
-                ('childname', models.CharField(max_length=30)),
-                ('relationship', models.CharField(max_length=50)),
-                ('streetaddress', models.CharField(max_length=50)),
-                ('towncity', models.CharField(max_length=50)),
-                ('postcode', models.CharField(max_length=50)),
-                ('phone', models.CharField(max_length=30)),
-                ('date', models.DateTimeField(auto_now_add=True)),
-                ('photo', models.FileField(blank=True, upload_to='photo')),
-                ('details_url', models.CharField(max_length=100)),
-                ('redact_data', models.CharField(max_length=30)),
-                ('notify', models.CharField(max_length=30)),
-                ('created_by', models.IntegerField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("parent", models.CharField(default="", max_length=40)),
+                ("childname", models.CharField(max_length=30)),
+                ("relationship", models.CharField(max_length=50)),
+                ("streetaddress", models.CharField(max_length=50)),
+                ("towncity", models.CharField(max_length=50)),
+                ("postcode", models.CharField(max_length=50)),
+                ("phone", models.CharField(max_length=30)),
+                ("date", models.DateTimeField(auto_now_add=True)),
+                ("photo", models.FileField(blank=True, upload_to="photo")),
+                ("details_url", models.CharField(max_length=100)),
+                ("redact_data", models.CharField(max_length=30)),
+                ("notify", models.CharField(max_length=30)),
+                ("created_by", models.IntegerField()),
             ],
         ),
     ]
