@@ -139,7 +139,7 @@ def qrcode(request, product_id):
         data_valid=True
         if url_intel(url) == False:
             data_valid=False
-        if file_intel(file)!=0:
+        if file and file_intel(file)!=0:
             if file_scan(file)==100:
                 data_valid=False
         
@@ -199,7 +199,8 @@ def qrcode_detail(request, qrcode_id):
             Your child was found at this location.
             \nLatitude: {latitude}, Longitude: {longitude}, Region: {region}
         """
-        # convert_to_regional_language(region, message)
+        regional_language=''
+        # regional_language=convert_to_regional_language(region, message)
         # send_twilio_msg(qrcode_details.phone, message)
 
     except pe.PangeaAPIException as e:
@@ -223,6 +224,7 @@ def qrcode_detail(request, qrcode_id):
 
     context = {
         "description": description,
+        "regional_language":regional_language,
     }
     return render(request, "qrcode/qrcode_details.html", context)
 

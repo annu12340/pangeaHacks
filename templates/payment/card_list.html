@@ -34,7 +34,7 @@
       <div class="h3">Select credit card</div> <br>
          <div class=" grid lg:grid-cols-4 gap-6 credit-card-wrap">
             {% for  card in cards %}
-            <div class="credit-card-inner shadow">
+            <a href="{{redirect_to}}"><div class="credit-card-inner shadow">
                <button class=""><i class="fa-regular fa-eye"></i> View Details</button>
                <div class="mk-icon-sim"></div>
                <div class="credit-font credit-card-number" >{{card.card_number}}</div>
@@ -49,7 +49,8 @@
                      <div class="pull-right"><div class="mk-icon-visa"></div></div>
                   </div>
                </footer>
-            </div>
+            </div></a>
+            
 
             {% endfor %}
 

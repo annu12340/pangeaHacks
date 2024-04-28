@@ -1,7 +1,9 @@
 import os, requests
 import stripe
+from django.urls import reverse
 from django.shortcuts import redirect, render
 from .models import Category, Product, CreditCard
+from qrcode.models import Qrcode_info
 from utils.ip_address import get_public_ip
 from pangea.config import PangeaConfig
 from pangea.services import Audit, UserIntel, Embargo, FileScan, DomainIntel, IpIntel
@@ -89,13 +91,20 @@ def new_card(request, product_id):
 def list_cards(request, product_id):
     print("reached here")
     product = Product.objects.filter(id=product_id)[0]
+    qrcode  = Qrcode_info.objects.filter(id=product_id)[0]
     print("productsproductsproducts", product.name)
 
     user_cards = CreditCard.objects.filter(user_id=request.user.id)
+    
+    if qrcode.redact_data == "yes":
+        redirect_to=reverse('password', kwargs={'redirect_type': 'password'})
+    else:
+        redirect_to=reverse('login',kwargs={'product_id': id})
+
     return render(
         request,
         "payment/card_list.html",
-        {"cards": user_cards, "product": product},
+        {"cards": user_cards, "product": product, "redirect_to":redirect_to},
     )
 
 

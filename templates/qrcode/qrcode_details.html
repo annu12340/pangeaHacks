@@ -1,17 +1,73 @@
-{% extends 'layout.html' %} {% load static %} {% block content %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
-<section class="qrcode-section">
-   <div class="container">
-      <div class="row grid grid-cols-1 md:grid-cols-12">
-         <div class="md:col-span-3">
-            <img src="https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg" alt="" />
-         </div>
-         <div class="md:col-span-6 ml-10 qrcode-details">
-            <h1 class="title text-center"><u>{{ qrcode_details.childname }}</u></h1>
-            <div class="details">{{description | safe }}</div>
-         </div>
-      </div>
-   </div>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" />
 
-{% endblock %}
+      <style>
+         .qrcode-section {
+            background-color: #f4f4f4; /* Light gray background */
+            padding: 10%;
+         }
+
+         .qrcode-image {
+            max-width: 100%;
+            height: auto;
+         }
+
+         .qrcode-details {
+            padding: 0 20px; /* Add padding to the details section */
+         }
+
+         .title {
+            color: #333; /* Dark text color */
+            font-size: 24px; /* Increase title font size */
+            margin-bottom: 20px; /* Add margin bottom for spacing */
+         }
+
+         .description {
+            color: #666; /* Medium gray text color */
+            font-size: 16px; /* Normal font size */
+            line-height: 1.5; /* Adjust line height for readability */
+         }
+
+         .regional-language {
+            background-color: #fff; /* White background */
+            padding: 20px; /* Add padding */
+            border-radius: 5px; /* Add border radius for rounded corners */
+         }
+
+         .language-heading {
+            color: #333; /* Dark text color */
+            font-size: 20px; /* Increase heading font size */
+            margin-bottom: 10px; /* Add margin bottom for spacing */
+         }
+
+         .language-content {
+            color: #666; /* Medium gray text color */
+            font-size: 16px; /* Normal font size */
+         }
+      </style>
+   </head>
+   <body>
+      <section class="qrcode-section">
+         <div class="container">
+            <div class="row grid grid-cols-1 md:grid-cols-12">
+               <div class="md:col-span-3">
+                  <img class="qrcode-image" src="https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg" alt="QR Code Image" />
+               </div>
+               <div class="md:col-span-6 ml-10 qrcode-details">
+                  <h1 class="title text-center">{{ qrcode_details.childname }}</h1>
+                  <div class="description">{{ description | safe }}</div>
+               </div>
+               <div class="md:col-span-3 regional-language">
+                  <h3 class="language-heading">Regional Language</h3>
+                  <div class="language-content">{{ regional_language }}</div>
+               </div>
+            </div>
+         </div>
+      </section>
+   </body>
+</html>
