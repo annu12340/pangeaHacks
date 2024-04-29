@@ -1,14 +1,14 @@
 import os
 from twilio.rest import Client
 from dotenv import load_dotenv
-
+from get_token_from_vault import get_token
 load_dotenv()
 
 
 def send_twilio_msg(number, message):
 
-    account_sid = os.getenv("TWILIO_ACCOUNT")
-    auth_token = os.getenv("TWILIO_AUTH_TOKEN")
+    account_sid = get_token("pvi_zkylvdcedngam63jeb4aia66izpekiiv")
+    auth_token = get_token("pvi_yrhe57dmffh7734g2jecw5gldt474z44")
 
     client = Client(account_sid, auth_token)
 
