@@ -7,8 +7,11 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" />
 
       <style>
+         .h3 {
+            font-size: 2.9rem;
+         }
          .qrcode-section {
-            background-color: #f4f4f4; /* Light gray background */
+            background-color: #eceeef; /* Light gray background */
             padding: 10%;
          }
 
@@ -59,6 +62,7 @@
                   <img class="qrcode-image" src="https://images.pexels.com/photos/1416736/pexels-photo-1416736.jpeg" alt="QR Code Image" />
                </div>
                <div class="md:col-span-6 ml-10 qrcode-details">
+                  <h3 class="h3">Details</h3>
                   <h1 class="title text-center">{{ qrcode_details.childname }}</h1>
                   <div class="description">{{ description | safe }}</div>
                </div>

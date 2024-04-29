@@ -8,11 +8,11 @@
             <img class="product-image" src="{{ product.photo.url }}" alt="">
          </div>
          <div class="details-info ">
-            <h3 class="product-name">Black Jacket XL</h3>
-           Lorem ipsum dolor sit amet consec ipsum dolor sit amet consec ipsum dolor sit amet consectetur, adipisicing elit. Eaque, iure.
+            <h3 class="product-name">{{ product.name }} </h3>
+            {{ product.details }}
             <h4 class="stock-status">Only 2 left in stock</h4>
             <div class="price-section">
-               <h4 class="product-price">$89</h4>
+               <h4 class="product-price">${{ product.price }}</h4>
              </div>
             <div class="quantity-section">
                <label class="uppercase text-gray" for="quantity">QTY</label>
@@ -22,10 +22,7 @@
                </select>
             </div>
          </div>
-         <div class="item-image">
-            <img class="product-image" src="{{ product.photo.url }}" alt="">
-            Scan to verify info
-         </div>
+
       </div>
    </div>
 
@@ -34,7 +31,7 @@
       <div class="h3">Select credit card</div> <br>
          <div class=" grid lg:grid-cols-4 gap-6 credit-card-wrap">
             {% for  card in cards %}
-            <a href="{{redirect_to}}"><div class="credit-card-inner shadow">
+            <a href="{% url 'password' %}"><div class="credit-card-inner shadow">
                <button class=""><i class="fa-regular fa-eye"></i> View Details</button>
                <div class="mk-icon-sim"></div>
                <div class="credit-font credit-card-number" >{{card.card_number}}</div>
@@ -50,7 +47,7 @@
                   </div>
                </footer>
             </div></a>
-            
+
 
             {% endfor %}
 

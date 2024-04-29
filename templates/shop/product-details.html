@@ -15,12 +15,14 @@
                <span class="mr-2">{{ product.rating }}</span>
                <span class="ion-ios-star text-yellow-500">★</span>
                <span class="ion-ios-star text-yellow-500">★</span>
+               <span class="ion-ios-star text-yellow-500">★</span>
+               <span class="ion-ios-star text-yellow-500">★</span>
                <span class="ion-ios-star text-gray-400">☆</span>
             </div>
             <p class="price text-2xl font-bold mb-4">₹{{ product.price }}</p>
 
-            <p class="description text-gray-700 leading-relaxed mb-6">{{product.description}}</p>
-
+            <p class="description text-gray-700 leading-relaxed mb-6">{{product.details}}</p>
+            <br />
             <a href="{% url 'qrcode' product.id%}" class="btn btn-primary inline-block px-6 py-3 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-300"><i class="fa-regular fa-circle-down"></i> Encode QR Code</a>
          </div>
       </div>

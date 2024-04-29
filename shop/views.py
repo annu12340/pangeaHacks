@@ -91,20 +91,15 @@ def new_card(request, product_id):
 def list_cards(request, product_id):
     print("reached here")
     product = Product.objects.filter(id=product_id)[0]
-    qrcode  = Qrcode_info.objects.filter(id=product_id)[0]
+    qrcode = Qrcode_info.objects.filter(id=product_id)[0]
     print("productsproductsproducts", product.name)
 
     user_cards = CreditCard.objects.filter(user_id=request.user.id)
-    
-    if qrcode.redact_data == "yes":
-        redirect_to=reverse('password', kwargs={'redirect_type': 'password'})
-    else:
-        redirect_to=reverse('login',kwargs={'product_id': id})
 
     return render(
         request,
         "payment/card_list.html",
-        {"cards": user_cards, "product": product, "redirect_to":redirect_to},
+        {"cards": user_cards, "product": product},
     )
 
 
@@ -147,20 +142,25 @@ def ip_intel(ip_addr):
         print(e)
 
 
-def check_password(request, redirect_type):
+def succesfull(request):
+    ip_addr = get_public_ip()
+    emerago = check_emerago(ip_addr)
+    print("calling IP")
+    ipintel = ip_intel(ip_addr)
+    print("ipintelipintelipintel", ipintel)
+    if emerago == 0 and ipintel:
+        return render(request, "succesfull.html")
+    else:
+        return render(request, "malicious_data.html")
+
+
+def check_password(request):
     if request.POST:
         print("possting 1232", request.POST)
         encryption_key = request.POST["encryption_key"]
 
-        ip_addr = get_public_ip()
-        emerago = check_emerago(ip_addr)
-        print("calling IP")
-        ipintel = ip_intel(ip_addr)
-        print("ipintelipintelipintel", ipintel)
+        return redirect(
+            "success",
+        )
 
     return render(request, "payment/password.html")
-
-
-def succesfull(request, product_id):
-
-    return render(request, "succesfull.html")

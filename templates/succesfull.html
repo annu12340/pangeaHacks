@@ -88,13 +88,13 @@
    document.addEventListener("DOMContentLoaded", function () {
       // JavaScript code to execute on page load
       const tickMarks = document.querySelectorAll(".tick-mark");
-      let delay = 0;
+      let delay = 3000;
 
       tickMarks.forEach((tickMark) => {
          setTimeout(() => {
             tickMark.style.display = "block";
          }, delay);
-         delay += 1000;
+         delay += 4000;
       });
    });
 </script>

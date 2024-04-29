@@ -2,6 +2,7 @@ import os, time
 from pathlib import Path
 from django.shortcuts import render, redirect
 import segno
+import webbrowser
 
 from .models import Qrcode_info
 from utils.ip_address import get_public_ip
@@ -80,8 +81,8 @@ def file_intel(file_name):
             raw=True,
         )
         print("Result:")
-        print( response.result.data)
-        return  response.result.data.score
+        print(response.result.data)
+        return response.result.data.score
     except pe.PangeaAPIException as e:
         print(e)
 
@@ -133,33 +134,36 @@ def qrcode(request, product_id):
             notify=notify,
             created_by=request.user.id,
         )
-        
+        qrcode_info.save()
 
         # ----Verification -----
-        data_valid=True
+        data_valid = True
         if url_intel(url) == False:
-            data_valid=False
-        if file and file_intel(file)!=0:
-            if file_scan(file)==100:
-                data_valid=False
-        
-        if data_valid==False:
-            return render(request, "malicious_data.html")
+            data_valid = False
+        print("\n\n\n\n file isssssss", file)
+
+        # if file and file_intel(file)!=0:
+        #     if file_scan(file)==100:
+        #         data_valid=False
+
+        # if data_valid==False:
+        #     return render(request, "malicious_data.html")
 
         # Save the model instance
-        qrcode_info.save()
 
         # file_scan(file)
 
         # Generating the QR Code
         qrcode_data = "http://127.0.0.1:8000/qrcode/" + str(qrcode_info.id)
         qrcode = segno.make_qr(qrcode_data)
+        qrcode_path = f"{settings.MEDIA_ROOT}/qrcode/{qrcode_info.id}.png"
         qrcode.save(
-            f"{settings.MEDIA_ROOT}/qrcode/{qrcode_info.id}.png",
+            f"{qrcode_path}",
             scale=5,
             dark="brown",
             data_dark="orange",
         )
+        webbrowser.open(qrcode_path)
 
         return redirect("checkout", product_id=product_id)
 
@@ -199,7 +203,7 @@ def qrcode_detail(request, qrcode_id):
             Your child was found at this location.
             \nLatitude: {latitude}, Longitude: {longitude}, Region: {region}
         """
-        regional_language=''
+        regional_language = ""
         # regional_language=convert_to_regional_language(region, message)
         # send_twilio_msg(qrcode_details.phone, message)
 
@@ -224,7 +228,7 @@ def qrcode_detail(request, qrcode_id):
 
     context = {
         "description": description,
-        "regional_language":regional_language,
+        "regional_language": regional_language,
     }
     return render(request, "qrcode/qrcode_details.html", context)
 
