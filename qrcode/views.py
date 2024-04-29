@@ -15,7 +15,7 @@ from backend import settings
 
 import pangea.exceptions as pe
 from pangea.config import PangeaConfig
-from pangea.services import FileScan, FileIntel, IpIntel, Redact, UrlIntel
+from pangea.services import FileScan, FileIntel, IpIntel, Redact, UrlIntel, Audit
 from pangea.tools import logger_set_pangea_config
 
 load_dotenv()
@@ -25,21 +25,20 @@ domain = os.getenv("PANGEA_DOMAIN")
 config = PangeaConfig(domain=domain, queued_retry_enabled=False)
 client = FileScan(token, config=config, logger_name="pangea")
 intel = UrlIntel(token, config=config)
-
+audit = Audit(os.getenv("PANGEA_TOKEN"), config=config)
 
 def file_scan(file_name):
-    print("Checking file...")
-    # TODO: Fix this
+    audit.log(f"Performing file scan on the file {file_name}")
     BASE_DIR = Path(__file__).resolve().parent
     file_path = str(BASE_DIR / "media" / "reports" / file_name)
-    print("file_path", file_path)
+
     exception = None
     try:
         with open(file_path, "rb") as f:
             response = client.file_scan(file=f, verbose=True)
 
-        print("Scan success on first attempt...")
-        print(f"Response: {response.summary}")
+        audit.log("Scan success on first attempt...")
+        audit.log(f"Response: {response.summary}")
         exit()
     except pe.AcceptedRequestException as e:
         # Save the exception value to request the results later.
@@ -62,8 +61,8 @@ def file_scan(file_name):
     try:
         # poll for the results
         response = client.poll_result(exception)
-        print("Got result successfully...")
-        print(f"Response: {response.result}")
+        audit.log("Got result successfully...")
+        audit.log(f"Response: {response.result}")
     except pe.PangeaAPIException as e:
         print(f"Request Error: {e.response.summary}")
         for err in e.errors:
@@ -72,7 +71,9 @@ def file_scan(file_name):
 
 def file_intel(file_name):
     try:
+        audit.log(f"Getting Hash for the file")
         indicator = calculate_sha256(file_name)
+        audit.log(f"Performing file intel on the file {file_name}")
         response = intel.hash_reputation(
             hash=indicator,
             hash_type="sha256",
@@ -89,6 +90,7 @@ def file_intel(file_name):
 
 def url_intel(url):
     try:
+        audit.log(f"Performing url intel on the file {url}")
         url_list = [url]
         response = intel.reputation_bulk(
             urls=url_list, provider="crowdstrike", verbose=True, raw=True
@@ -140,20 +142,21 @@ def qrcode(request, product_id):
         data_valid = True
         if url_intel(url) == False:
             data_valid = False
-        print("\n\n\n\n file isssssss", file)
 
-        # if file and file_intel(file)!=0:
-        #     if file_scan(file)==100:
-        #         data_valid=False
 
-        # if data_valid==False:
-        #     return render(request, "malicious_data.html")
+        if file and file_intel(file)!=0:
+            if file_scan(file)==100:
+                data_valid=False
+
+        if data_valid==False:
+            audit.log(f"Data is malicious. Redirecting to malicious_data.html")
+            return render(request, "malicious_data.html")
 
         # Save the model instance
-
-        # file_scan(file)
+        file_scan(file)
 
         # Generating the QR Code
+        audit.log("Generating the new QR Code")
         qrcode_data = "http://127.0.0.1:8000/qrcode/" + str(qrcode_info.id)
         qrcode = segno.make_qr(qrcode_data)
         qrcode_path = f"{settings.MEDIA_ROOT}/qrcode/{qrcode_info.id}.png"
@@ -171,8 +174,7 @@ def qrcode(request, product_id):
 
 
 def redact_info(text):
-    print(f"Redacting PII from: {text}")
-
+    audit.log(f"Redacting PII from: {text}")
     try:
         redact = Redact(token, config=config)
         redact_response = redact.redact(text=text)
@@ -190,22 +192,22 @@ def qrcode_detail(request, qrcode_id):
     try:
         ip = get_public_ip()
 
-        # intel = IpIntel(token, config=config)
-        # response = intel.geolocate_bulk(ips=[ip])
-        # print(f"Response: {response.result}")
-        # latitude=response.result.data.get(ip).latitude
-        # longitude=response.result.data.get(ip).longitude
-        # mark_location(latitude,longitude)
-        longitude = 2323
-        latitude = 1212
-        region = "bangalore"
+        intel = IpIntel(token, config=config)
+        audit.log("Getting the coordinates of the ip scan")
+        response = intel.geolocate_bulk(ips=[ip])
+        print(f"Response: {response.result}")
+        latitude=response.result.data.get(ip).latitude
+        longitude=response.result.data.get(ip).longitude
+        region=response.result.data.get(ip).region
+
+        mark_location(latitude,longitude)
         message = f"""
             Your child was found at this location.
             \nLatitude: {latitude}, Longitude: {longitude}, Region: {region}
         """
         regional_language = ""
-        # regional_language=convert_to_regional_language(region, message)
-        # send_twilio_msg(qrcode_details.phone, message)
+        regional_language=convert_to_regional_language(region, message)
+        send_twilio_msg(qrcode_details.phone, message)
 
     except pe.PangeaAPIException as e:
         print(f"Request Error: {e.response.summary}")
@@ -213,7 +215,7 @@ def qrcode_detail(request, qrcode_id):
             print(f"\t{err.detail} \n")
 
     description = f"""
-    <p><strong>This is {qrcode_details.childname}, of {qrcode_details.parent}. The child has been reported missing.</strong></p>
+    <p><strong>This is {qrcode_details.childname}, {qrcode_details.relationship} of {qrcode_details.parent}. The child has been reported missing.</strong></p>
     <p>If found, please contact {qrcode_details.phone}</p>
     <br>
     <br>
@@ -223,7 +225,7 @@ def qrcode_detail(request, qrcode_id):
     {qrcode_details.towncity}<br>
     {qrcode_details.postcode}</p>
 """
-    if True != True:
+    if qrcode_details.redact_data == 'yes':
         description = redact_info(description)
 
     context = {

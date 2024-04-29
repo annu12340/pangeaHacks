@@ -20,17 +20,17 @@ from utils.encrypt_decrypt import encrypt_info, decrypt_info
 load_dotenv()
 config = PangeaConfig(domain=os.getenv("PANGEA_DOMAIN"))
 audit = Audit(os.getenv("PANGEA_TOKEN"), config=config)
+embargo=Embargo(os.getenv("PANGEA_TOKEN"), config=config)
 token = os.getenv("PANGEA_TOKEN")
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
 
 def shop_page(request):
-    print("request.user.is_authenticated", request.user.is_authenticated)
     category = Category.objects.all()
     products = Product.objects.all()
     context = {"category": category, "products": products}
-    # audit.log(f"User has visited shop page")
+    audit.log(f"User {request.user.name} has visited shop page")
     return render(request, "shop/dashboard.html", context)
 
 
@@ -45,31 +45,31 @@ def product_details(request, product_id):
 def checkout(request, product_id):
     # Check if the user has any saved cards
     user_cards = CreditCard.objects.filter(user_id=request.user.id)
-    print("inside checkout aaa", user_cards)
+
     if user_cards.exists():
         # If user has saved cards, display the list of cards
+        audit.log(f"Displaying user's saved credit card info")
         return render(request, "payment/card_list.html", {"cards": user_cards})
 
     else:
         # If user doesn't have any saved cards, prompt them to add a new card
-        print("Adding new card")
+        audit.log("Adding new card for the user")
         return redirect("new_card", product_id=product_id)
 
 
 def new_card(request, product_id):
     if request.POST:
-        print("possting", request.POST)
-
+  
         card_number = request.POST["card_num"]
         cardholder_name = request.POST.get("card_holder", "")
         expiry_date = request.POST.get("card_expiry_date", "")
         security_number = request.POST.get("card_cvv", "")
         encryption_key = request.POST.get("encryption_key")
-        # if encryption_key:
+        if encryption_key:
         # Encrpting and ciphering sensitive card info
-        # TODO: Rwmove comment
-        # card_number=encrypt_info(card_number, encryption_key)
-        # security_number=encrypt_info(card_number, encryption_key)
+            card_number=encrypt_info(card_number, encryption_key)
+            security_number=encrypt_info(card_number, encryption_key)
+
         card_number = card_number
         security_number = security_number
         card_info = CreditCard(
@@ -82,17 +82,16 @@ def new_card(request, product_id):
         )
 
         card_info.save()
-        print("redircting to list_cards")
+        audit.log("Saving the credit card info")
         return redirect("list_cards", product_id=product_id)
     else:
         return render(request, "payment/add_new_card.html", {"product_id": product_id})
 
 
 def list_cards(request, product_id):
-    print("reached here")
+    audit.log(f"Listing the credit card for user {request.user.id}")
     product = Product.objects.filter(id=product_id)[0]
     qrcode = Qrcode_info.objects.filter(id=product_id)[0]
-    print("productsproductsproducts", product.name)
 
     user_cards = CreditCard.objects.filter(user_id=request.user.id)
 
@@ -104,18 +103,19 @@ def list_cards(request, product_id):
 
 
 def check_emerago(ip_addr):
-
+    audit.log(f"Emberago checking for the IP {ip_addr}")
     sanction_msg = ""
 
     try:
-        # embargo_response = embargo.ip_check(ip=ip_addr)
-        # print(f"Response: {embargo_response.result}")
-        # audit.log(f"A user with ip addresss {ip_addr} has tried to login")
-        # sanctions_count= embargo_response.result.count
+        embargo_response = embargo.ip_check(ip=ip_addr)
+        print(f"Response: {embargo_response.result}")
+        audit.log(f"A user with ip addresss {ip_addr} has tried to login")
+        sanctions_count= embargo_response.result.count
         sanctions_count = 0
         if sanctions_count >= 1:
-            print("sanction_msg", sanction_msg)
-            # sanction_msg=embargo_response.result.summary
+            sanction_msg=embargo_response.result.summary
+            audit.log(f"Sanction_msg is ", sanction_msg)
+        return sanctions_count
         return sanctions_count
     except pe.PangeaAPIException as err:
         print(f"Embargo Request Error: {err.response.summary}")
@@ -125,33 +125,21 @@ def check_emerago(ip_addr):
 
 def ip_intel(ip_addr):
     try:
-
+        audit.log(f"IP intel checking for the IP {ip_addr}")
         intel = IpIntel(token, config=config)
         response = intel.get_domain(
             ip=ip_addr, provider="digitalelement", verbose=True, raw=True
         )
 
         if response.result.data.domain_found:
-            print("IP domain was found")
+            audit.log("IP domain was found")
             return True
         else:
-            print("IP domain was not found")
+            audit.log("IP domain was not found")
             return False
 
     except pe.PangeaAPIException as e:
         print(e)
-
-
-def succesfull(request):
-    ip_addr = get_public_ip()
-    emerago = check_emerago(ip_addr)
-    print("calling IP")
-    ipintel = ip_intel(ip_addr)
-    print("ipintelipintelipintel", ipintel)
-    if emerago == 0 and ipintel:
-        return render(request, "succesfull.html")
-    else:
-        return render(request, "malicious_data.html")
 
 
 def check_password(request):
@@ -164,3 +152,16 @@ def check_password(request):
         )
 
     return render(request, "payment/password.html")
+
+def succesfull(request):
+    ip_addr = get_public_ip()
+    emerago = check_emerago(ip_addr)
+    ipintel = ip_intel(ip_addr)
+
+    if emerago == 0 and ipintel:
+        audit.log(f"Checks were succesfull")
+        return render(request, "succesfull.html")
+    else:
+        audit.log(f"Checks had failed. Redirecting to malicious_data.html")
+        return render(request, "malicious_data.html")
+

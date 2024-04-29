@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 import pangea.exceptions as pe
 from pangea.config import PangeaConfig
+from pangea.services import  Audit
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,7 +21,7 @@ from pangea_django import (
     generate_state_param,
 )
 
-
+audit = Audit(os.getenv("PANGEA_TOKEN"), config=config)
 def index(request):
     if request.user.is_authenticated:
         return redirect("/shop")
@@ -33,15 +34,16 @@ def index(request):
 def post_login(request):
     user = PangeaAuthentication().authenticate(request=request)
     if user:
-        print(3)
+        audit.log("User is successfully authenticated")
         return redirect("/shop")
-    print(4)
+
     return redirect("/")
 
 
 @login_required(login_url="/")
 def logout(request):
     user = PangeaAuthentication().logout(request)
+    audit.log("User is successfully logged out")
     return redirect("/")
 
 
