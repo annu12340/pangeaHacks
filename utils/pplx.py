@@ -1,7 +1,7 @@
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
-from get_token_from_vault import get_token
+from utils.get_token_from_vault import get_token
 load_dotenv()
 
 

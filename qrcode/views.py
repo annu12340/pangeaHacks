@@ -188,7 +188,7 @@ def redact_info(text):
 
 def qrcode_detail(request, qrcode_id):
     qrcode_details = Qrcode_info.objects.get(id=qrcode_id)
-
+    region=''
     try:
         ip = get_public_ip()
 
@@ -198,7 +198,7 @@ def qrcode_detail(request, qrcode_id):
         print(f"Response: {response.result}")
         latitude=response.result.data.get(ip).latitude
         longitude=response.result.data.get(ip).longitude
-        region=response.result.data.get(ip).region
+        # region=response.result.data.get(ip).region
 
         mark_location(latitude,longitude)
         message = f"""
