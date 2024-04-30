@@ -7,7 +7,7 @@ Install the following
 - folium
 - ollama
 - pangea-django
-- pangea-django
+- pangea-sdk
 - twilio
 - segno
 
@@ -16,11 +16,12 @@ Generate custom tokens for
 - twilio
 - perplexity API
 - pangea
-(This step is mandatory)
+
+All the 3 tokens are manadatory
 
 Add the tokens in either .env file or in vault. Update the code correspondingly
 
-Then do
+Once that is done, then do
 ```
 python manage.py makemigrations
 python manage.py migrate
